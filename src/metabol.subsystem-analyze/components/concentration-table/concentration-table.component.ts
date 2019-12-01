@@ -23,6 +23,8 @@ export class ConcentrationTableComponent implements OnInit {
   analyzeName: FormControl;
   isPublic: FormControl;
   selectedMethod = 0;
+  analyzeEmail: FormControl;
+  Disease: FormControl;
   comboboxMethods: Array<object> = [
     { id: 0, name: "Metabolitics" },
     { id: 1, name: "Direct Pathway Mapping" },
@@ -44,6 +46,8 @@ export class ConcentrationTableComponent implements OnInit {
     this.form = this.createForm();
     this.analyzeName = new FormControl("My Analyze", Validators.required);
     this.isPublic = new FormControl(true, Validators.required);
+    this.analyzeEmail = new FormControl("Email", Validators.required); //Disease
+    this.Disease = new FormControl("Disease/Condition", Validators.required);
   }
 
   remove(index) {
@@ -80,7 +84,8 @@ export class ConcentrationTableComponent implements OnInit {
     }
   }
   metabolitics(data) {
-    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
+    // this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
+    this.http.post(`http://127.0.0.1:5000/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
         this.notify.info('Analysis Start', 'Analysis in progress');

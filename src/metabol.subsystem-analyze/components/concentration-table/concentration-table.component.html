@@ -1,4 +1,32 @@
 <div class="row">
+
+
+  <div class="form-group col-mat-4">
+    <label    *ngIf="!login.isLoggedIn()">Email</label>
+    <input   [formControl]="analyzeEmail"  type="text" class="form-control" placeholder="Email" *ngIf="!login.isLoggedIn()">
+
+  </div>
+
+<!--  /////////////////////-->
+  <div class="form-group col-mat-4">
+    <label >Disease / Physiological Condition</label>
+    <input [formControl]="Disease" type="text" class="form-control" placeholder="Disease">
+    <span class="text-danger" *ngIf="!analyzeName.valid && analyzeName.dirty">
+      Field Required
+    </span>
+  </div>
+
+<!--  ##########################-->
+
+
+
+
+
+
+
+
+
+
   <div class="form-group col-mat-4">
     <label>Analyze Name</label>
     <input [formControl]="analyzeName" type="text" class="form-control" placeholder="Analyze Name">
@@ -65,7 +93,7 @@
     </div>
     <div class="col-md-3">
       <select [(ngModel)]="selectedMethod" class="form-control">
-        <option *ngFor="let item of comboboxMethods" [ngValue]="item.id">{{item.name}}</option> 
+        <option *ngFor="let item of comboboxMethods" [ngValue]="item.id">{{item.name}}</option>
       </select>
     </div>
     <div class="col-md-2">

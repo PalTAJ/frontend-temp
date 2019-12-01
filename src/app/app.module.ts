@@ -32,6 +32,7 @@ import { MatDialogModule} from '@angular/material/dialog';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatSelectModule} from '@angular/material/select';
 import { MatInputModule} from '@angular/material/input';
+import { HttpModule } from '@angular/http';
 
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -62,6 +63,8 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     FormsModule,
     MatInputModule,
     HttpClientModule,
+    HttpModule,
+
     MetabolCommonModule,
     DocumentationModule,
     MetabolAuthModule,
