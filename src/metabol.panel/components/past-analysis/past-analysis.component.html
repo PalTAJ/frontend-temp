@@ -5,24 +5,37 @@
 	Compare
       </button>
       <form [formGroup]="form">
+			
 	<mat-tab-group>
 	  <ng-template ngFor let-type [ngForOf]="data | keys"> 
 	    <mat-tab *ngIf="data[type].length != 0" [label]="(type == 'list' ? 'private' : type) | titlecase">
 	      <div class="panel panel-default">
-		<ul class="list-group">
-		  <li class="list-group-item" *ngFor="let i of data[type] | orderBy:'name'">
-		    <input type="checkbox" [formControlName]="i.id" />
-		    <i class="glyphicon glyphicon-{{i.status ?  'saved' : 'time' }}"></i>
-		    <a [routerLink]="['/past-analysis', i.id]">
-		      {{i.name}} - ({{i.method}}) <!--({{i.status ?  'done' : 'running' }})-->
-		    </a>
-		  </li>
-		</ul>
-	      </div>
-	    </mat-tab>
+			<mat-accordion>
+				<mat-expansion-panel *ngFor="let i of data[type] | orderBy:'name'" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+					<mat-expansion-panel-header>
+					<mat-panel-title>
+							<a [routerLink]="['/past-analysis', i.id]">
+								{{i.name}}<!--({{i.status ?  'done' : 'running' }})-->
+								</a>
+					</mat-panel-title>
+					<mat-panel-description>
+							{{i.method}}
+					</mat-panel-description> 	
+					</mat-expansion-panel-header>
+					
+					<li class="list-group-item" *ngFor="let j of i.analyses | orderBy:'name'">
+							<div class="col-md-1 col-xs-1 col-lg-1"></div>
+							<input type="checkbox" [formControlName]="i.id" />
+							<a [routerLink]="['/past-analysis', j.id]"> {{j.name}}
+							</a>
+					</li>
+				</mat-expansion-panel>
+			</mat-accordion>
+		   </div>
+		</mat-tab>
 	  </ng-template>
 	</mat-tab-group>
-      </form>
-    </div>
+	  </form>
+	</div>
   </div>
 </section>

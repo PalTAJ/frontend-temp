@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatRippleModule } from '@angular/material';
+import { FileSelectDirective } from 'ng2-file-upload';
+import { MatFormFieldModule, MatInputModule , MatSelectModule } from '@angular/material';
+
 
 import {
   ConcentrationTableComponent,
@@ -22,9 +25,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-      MatSlideToggleModule,
-
-
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatInputModule ,
+    MatSelectModule,
     MatRippleModule,
 
     subsystemAnalyzeRouting,

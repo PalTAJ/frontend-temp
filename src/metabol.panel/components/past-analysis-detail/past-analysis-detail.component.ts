@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSelect } from '@angular/material';
 import { map } from "rxjs/operators";
 import { Router } from '@angular/router';
 import { LoginService } from "../../../metabol.auth/services";
@@ -17,10 +17,16 @@ import * as _ from 'lodash';
   styleUrls: ['./past-analysis-detail.component.css']
 })
 export class PastAnalysisDetailComponent implements OnInit {
+  conTable: Array<[string,number]> = [];
+  
 
   id;
   data;
+  data2:JSON;
+  idData;
+  recDATA:JSON;
   selectedMethod;
+  selectedObj=30;
   methods = {
     Metabolitics: '\d',
     DirectPathwayMapping: 'direct-pathway-mapping'
@@ -48,6 +54,9 @@ export class PastAnalysisDetailComponent implements OnInit {
   //     });
   // }
   ngOnInit() {
+
+
+
     this.route.params.subscribe((params) => {
       this.id = params['key'];
       // this.getData();
@@ -56,6 +65,7 @@ export class PastAnalysisDetailComponent implements OnInit {
       }
       else if (this.isInteger(this.id)) {
         // apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
+        this.selectedObj = parseInt(this.id);
         this.getData();
       }
       else {
@@ -70,24 +80,47 @@ export class PastAnalysisDetailComponent implements OnInit {
     //let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
     this.http.get(apiUrl, this.login.optionByAuthorization())
       .subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
+        this.data2 = JSON.parse(JSON.stringify(data['fold_changes']));
+
+      for (let t in this.data2){
+        this.conTable.push([t,this.data2[t]]);
+        
+        
+      }
+      console.log(this.conTable);
+
+
+        // this.conTable = data['fold_changes'] as JSON ; 
+        // console.log(this.conTable);
+
+        // this.
         // Eliminating the pathways starting with 'Transport' and 'Exchange'
         this.data = data;
-        let values = this.data['results_pathway'][0];
-        let eliminated = {};
-        let keys = _.keys(values)
-          .filter(x => !x.startsWith('Transport') && !x.startsWith('Exchange'));
-        keys.forEach(function (key) {
-          eliminated[key] = values[key];
-        });
-        this.data['results_pathway'][0] = eliminated;
-        
+        // let values = this.data['results_pathway'][0];
+        // let eliminated = {};
+        // let keys = _.keys(values)
+        //   .filter(x => !x.startsWith('Transport') && !x.startsWith('Exchange'));
+        // keys.forEach(function (key) {
+        //   eliminated[key] = values[key];
+        // });
+        // this.data['results_pathway'][0] = eliminated;
       });
+
+      // console.log(typeof JSON.parse(this.data));
+      // for (let t in this.data['fold_changes']){
+      //   console.log(t);
+      // }
+      
+      if (localStorage.getItem('reload') == 'True'){
+        localStorage.removeItem('reload');
+        location.reload();
+      }
   }
   getResult() {
     this.http.get('http://127.0.0.1:5000/analysis/direct-pathway-mapping', this.login.optionByAuthorization())
       .subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
         // console.log(Object.keys(data['results_reaction'][0]).length);
         this.data = data;
       });
@@ -114,4 +147,17 @@ export class PastAnalysisDetailComponent implements OnInit {
       return false;
     }
   }
+  doSomething () {
+    //update the ui
+    // console.log("Worked");
+    // console.log(this.selectedObj);
+    localStorage.setItem('reload', 'True');
+    this.router.navigate(['/past-analysis', this.selectedObj]);
+    
+  }
+
+
+
+
+  
 }

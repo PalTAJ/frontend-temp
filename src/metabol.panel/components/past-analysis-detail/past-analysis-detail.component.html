@@ -1,5 +1,63 @@
+
+<div >
+  <!-- <mat-form-field style="margin-left: 60px;"> -->
+
+  <mat-accordion>
+    <mat-expansion-panel  class="spacee">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Metabolomics Measurements
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+          <!--<concentration-table [conTable]="conTable"></concentration-table>-->
+      <div class="row">
+        <form  >
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th> </th>
+                <th>Metabolite Name</th>
+                <th>Change Value</th>
+
+              </tr>
+              </thead>
+
+              <tbody>
+
+              <tr *ngFor="let r of conTable;let i=index">
+                <td> </td>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </mat-expansion-panel>  </mat-accordion>
+  <!-- </mat-form-field> -->
+</div>
+
+
+
+
+
+
+
+
+<mat-form-field>
+    <label class="form-control">Cases of the study</label>
+    <mat-select class="form-control" [(ngModel)]="selectedObj" (selectionChange)="doSomething()">
+      <mat-option *ngFor="let analysis of data.analyses | orderBy:'name'" [value]="analysis.id">
+          {{analysis.name}} 
+          <!-- <a [routerLink]="['/past-analysis', analysis.id]"><div style="width: 100%;">  {{analysis.name}}</div></a> </mat-option> -->
+          <!-- <a [routerLink]="['/past-analysis', analysis.id]">{{analysis.name}}</a>--></mat-option> 
+    </mat-select>
+</mat-form-field>
 <h1>
-  {{ data?.name }} - ({{data?.method}}) <!--({{data?.status ?  'done' : 'running' }})-->
+    {{data?.study_name}} - {{ data?.case_name }} - ({{data?.method}}) <!--({{data?.status ?  'done' : 'running' }})-->
 </h1>
 <div *ngIf="data?.results_pathway">
   <div>

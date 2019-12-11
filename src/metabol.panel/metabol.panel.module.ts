@@ -5,14 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { SubsystemAnalyzeModule } from "../metabol.subsystem-analyze";
 import { VisualizationModule } from '../metabol.visualization';
-
+import { MatSelectModule } from '@angular/material/select';
 import { NgPipesModule } from 'ngx-pipes';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatRippleModule } from '@angular/material';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 // import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {MatExpansionModule, MatTabsModule} from '@angular/material';
+import { MatTabsModule} from '@angular/material';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import {
   PanelComponent,
@@ -30,6 +31,7 @@ import {
 
 import { LoginService } from '../metabol.auth/services/login/login.service';
 import { PanelRoutesRoutingProviders, PanelRoutesRouting } from './metabol.panel.routes';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,7 @@ import { PanelRoutesRoutingProviders, PanelRoutesRouting } from './metabol.panel
     FormsModule,
     MatTabsModule,
     
-
+    MatSelectModule,
     NgPipesModule,
     MatRippleModule,
     FlexLayoutModule,

@@ -31,6 +31,8 @@ export class UploadComponent {
 
 
   selected = 'Combined.json';
+  temp:JSON;
+  temp2;
   data;
   ooldM;
   arrayBuffer: any;
@@ -55,8 +57,37 @@ export class UploadComponent {
   readJson(inputValue: any) {
     var file: File = inputValue.files[0];
     var myReader: FileReader = new FileReader();
-    myReader.onload = (e: any) =>
-      this.conTable = <Array<[string, number]>>_.toPairs(JSON.parse(e.target.result));
+
+    let file2 = this.selected;
+    myReader.onload = (e: any) =>{
+    // this.temp = JSON.parse(JSON.stringify(e.target.result));
+    this.temp = JSON.parse(e.target.result);
+    console.log(this.temp);
+    for (let t in this.temp){
+      console.log(t);
+      console.log(this.temp[t]);
+
+      this.subSerivce.getJSON(file2).subscribe(data => {
+        if (data[t] === null || data[t] === undefined || data[t] === "" || data[t].lenght === 0) {
+          // if this condition apply mostly it means we dont need to map the metabolic to other database,
+          // and its the correct name so we keep it
+         t = t;
+        } else { // if mapping is needed(in other way if mapping name exist in our combined database )
+          this.ooldM = t;
+          t = data[t] + " \t(" + this.ooldM + ")";
+          console.log(t);
+        }
+        this.conTable.push([t,this.temp[t]]);
+
+
+
+      }); 
+    }
+      
+    
+
+      // this.conTable = <Array<[string, number]>>_.toPairs(JSON.parse(e.target.result));
+    }
     myReader.readAsText(file);
   }
 
@@ -65,16 +96,41 @@ export class UploadComponent {
   }
 
   readCsv(inputValue: any) {
+    // var file: File = inputValue.files[0];
+    // var myReader: FileReader = new FileReader();
+    // myReader.onload = (e: any) => {
+    //   let lines = e.target.result.split("\n");
+    //   for (let i of lines) {
+    //     let c = i.split(',');
+    //     this.conTable.push(c);
+    //   }
+    // }
+    // myReader.readAsText(file);
     var file: File = inputValue.files[0];
     var myReader: FileReader = new FileReader();
     myReader.onload = (e: any) => {
       let lines = e.target.result.split("\n");
       for (let i of lines) {
         let c = i.split(',');
+        let file2 = this.selected;
+        this.subSerivce.getJSON(file2).subscribe(data => {  // opens combined.json to get te metabolic name if needed
+          //data contains the data from combined.json
+          if (data[c[0]] === null || data[c[0]] === undefined || data[c[0]] === "" || data[c[0]].lenght === 0) {
+            // if this condition apply mostly it means we dont need to map the metabolic to other database,
+            // and its the correct name so we keep it
+            c[0] = c[0];
+          } else { // if mapping is needed(in other way if mapping name exist in our combined database )
+            this.ooldM = c[0];
+            c[0] = data[c[0]] + " \t(" + this.ooldM + ")";
+            console.log(c);
+          }
+        });
         this.conTable.push(c);
       }
     }
     myReader.readAsText(file);
+
+
   }
 
   ///////////////////////////////// Workbench

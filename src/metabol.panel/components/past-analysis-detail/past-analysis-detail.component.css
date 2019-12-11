@@ -5,3 +5,8 @@ tbody > tr > td:first-child{
 ngx-datatable{
     margin-top:30px;
 }
+
+mat-expansion-panel {
+  width: 50%;
+  margin-left:20%;
+}

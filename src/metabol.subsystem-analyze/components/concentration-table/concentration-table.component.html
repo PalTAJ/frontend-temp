@@ -37,23 +37,61 @@
   <div class="form-group col-mat-4">
     <label>Public or Private</label>
     <div>
+
       <mat-slide-toggle [formControl]="isPublic">{{ isPublic.value ? 'Public' : 'Private' }}</mat-slide-toggle>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
 <div class="row">
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Metabolite Name</th>
-            <th>Change Value</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Database Name</th>
+              <th>Metabolite Name</th>
+              <th>Change Value</th>
+  
+              <th></th>
+            </tr>
+          </thead>
+  
+  
+          <tbody>
+            <tr>
+              <td>
+  
+              <div class="form-group col-mat-3">
+  
+                <!--<mat-form-field>-->
+  
+                <mat-select  class="form-control"   for="pizza" [(value)]="selected">
+  
+                  <mat-option value="Combined.json">All-mapping</mat-option>
+                    <mat-option value="cheBl-mapping.json">cheBl-mapping</mat-option>
+                    <mat-option value="hmdb-mapping.json">hmdb-mapping</mat-option>
+                    <mat-option value="kegg-mapping.json">kegg-mapping</mat-option>
+                    <mat-option value="pubChem-mapping.json">pubChem-mapping</mat-option>
+  
+                </mat-select>
+                <!--</mat-form-field>-->
+      </div>
+              </td>
+  
+
+
+
+
+
+
             <td>
               <div class="form-group">
                 <input formControlName="name" type="text" class="form-control" placeholder="Metabolite Name">

@@ -27,6 +27,7 @@ export class PathwayHistogramComponent implements OnInit, AfterViewInit {
   ngOnInit() { }
 
   ngAfterViewInit() {
+    console.log(this.pathwayScores);
     this.data[0].x = Object.keys(this.pathwayScores[0]);
     this.data[0].y = [];
 
@@ -36,7 +37,7 @@ export class PathwayHistogramComponent implements OnInit, AfterViewInit {
       this.data[0].y = sortedScores.map(x => x[1]);
       this.data[0].marker.color = sortedScores.map(x => x[1] > 0 ? '#3F51B5' : '#E91E63');
     }
-    Plotly.plot('histogram', this.data);
+    Plotly.react('histogram', this.data);
   }
 
 }

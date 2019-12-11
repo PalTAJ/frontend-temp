@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import {AppSettings} from "../../../app";
 import {SubsystemTreeNode, SubsystemTreeNodeType} from "../../models/subsystem";
 import * as _ from "lodash";
+import { Observable } from 'rxjs/Observable';
+
 
 @Injectable()
 export class SubsystemAnalyzeService {
@@ -20,6 +22,10 @@ export class SubsystemAnalyzeService {
       active: true,
       children: []
     };
+  }
+
+  public getJSON(file): Observable<any> {
+    return this.http.get('http://localhost:4200/assets/datasets/naming/' + file);
   }
 
   /**

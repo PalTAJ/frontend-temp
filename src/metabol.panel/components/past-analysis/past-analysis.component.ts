@@ -34,7 +34,9 @@ export class PastAnalysisComponent implements OnInit {
         localStorage.removeItem('search-results');
       }
       else
-        ['list', 'disease', 'public'].forEach(x => this.getData(x));
+        // ['list', 'disease', 'public'].forEach(x => this.getData(x));
+        ['list', 'public'].forEach(x => this.getData(x));
+        // this.getData('public');
     });
   }
 

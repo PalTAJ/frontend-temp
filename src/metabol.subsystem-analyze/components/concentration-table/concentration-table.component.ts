@@ -9,6 +9,11 @@ import { MetaboliteConcentration } from '../../models/metaboliteConcentration';
 import { SubsystemAnalyzeService } from "../../services/subsystem-analyze/subsystem-analyze.service";
 import { AppSettings } from '../../../app/';
 import { NotificationsService } from 'angular2-notifications';
+import { AppDataLoader } from '../../../metabol.common/services';
+import { HttpModule } from '@angular/http';
+import {validate} from 'codelyzer/walkerFactory/walkerFn';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'concentration-table',
@@ -19,12 +24,21 @@ import { NotificationsService } from 'angular2-notifications';
 export class ConcentrationTableComponent implements OnInit {
   @Input() conTable: Array<[string, number]> = [];
 
+
+  data;
+  data2;
+  data3;
+  test: JSON;
+
+
   form: FormGroup;
   analyzeName: FormControl;
   isPublic: FormControl;
   selectedMethod = 0;
   analyzeEmail: FormControl;
   Disease: FormControl;
+  selected = 'Combined.json';
+
   comboboxMethods: Array<object> = [
     { id: 0, name: "Metabolitics" },
     { id: 1, name: "Direct Pathway Mapping" },
@@ -37,10 +51,12 @@ export class ConcentrationTableComponent implements OnInit {
   };
   constructor(
     private fb: FormBuilder,
+    private subSerivce: SubsystemAnalyzeService,
     private router: Router,
     private login: LoginService,
     private http: HttpClient,
-    private notify: NotificationsService) { }
+    private notify: NotificationsService,
+    private loader: AppDataLoader) { }
 
   ngOnInit() {
     this.form = this.createForm();
@@ -62,8 +78,27 @@ export class ConcentrationTableComponent implements OnInit {
   }
 
   onSubmit(value) {
-    this.conTable.push([value['name'], parseInt(value['value'])]);
-    this.form = this.createForm();
+    // this.conTable.push([value['name'], parseInt(value['value'])]);
+    // this.form = this.createForm();
+    let file = this.selected;
+    this.subSerivce.getJSON(file).subscribe(data => {
+      this.data2 = data[value['name']];
+
+      if (this.data2 === null || this.data2 === undefined || this.data2 === "" || this.data2.lenght === 0) {
+        this.notify.error('Adding metabolite Failed', 'Check if you chosen the right DB ');
+
+      } else {
+        this.conTable.push([data[value['name']], value['value']]);
+        this.form = this.createForm();
+        this.notify.info('Metabolite Added', ' Sucess');
+      }
+
+    });
+
+
+
+
+
   }
 
   analyze() {

@@ -33,6 +33,7 @@ import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatSelectModule} from '@angular/material/select';
 import { MatInputModule} from '@angular/material/input';
 import { HttpModule } from '@angular/http';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -64,6 +65,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     MatInputModule,
     HttpClientModule,
     HttpModule,
+    MatExpansionModule,
 
     MetabolCommonModule,
     DocumentationModule,
