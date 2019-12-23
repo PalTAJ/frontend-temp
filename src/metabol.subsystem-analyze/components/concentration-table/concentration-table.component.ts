@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import * as _ from 'lodash';
 
 import { LoginService } from "../../../metabol.auth/services";
@@ -10,10 +11,16 @@ import { SubsystemAnalyzeService } from "../../services/subsystem-analyze/subsys
 import { AppSettings } from '../../../app/';
 import { NotificationsService } from 'angular2-notifications';
 import { AppDataLoader } from '../../../metabol.common/services';
+import {Observable} from 'rxjs';
+import {startWith} from 'rxjs/operators';
 import { HttpModule } from '@angular/http';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import { map } from 'rxjs/operators';
 
+export interface Disease {
+  name: string;
+  synonym: string;
+}
 
 @Component({
   selector: 'concentration-table',
@@ -23,12 +30,21 @@ import { map } from 'rxjs/operators';
 })
 export class ConcentrationTableComponent implements OnInit {
   @Input() conTable: Array<[string, number]> = [];
-
+  myControl = new FormControl();
+  // options: Disease[] = [
+  //   {name: 'abc', synonym: 'x'},
+  //   {name: 'xyz', synonym: 'a'},
+  //   {name: 'cde', synonym: 'b'}
+  // ];
+  diseases: Disease[]= [];
+  filteredOptions: Observable<Disease[]>;
 
   data;
   data2;
   data3;
   test: JSON;
+  query: string;
+  filteredDiseases=[];
 
 
   form: FormGroup;
@@ -64,8 +80,29 @@ export class ConcentrationTableComponent implements OnInit {
     this.isPublic = new FormControl(true, Validators.required);
     this.analyzeEmail = new FormControl("Email", Validators.required); //Disease
     this.Disease = new FormControl("Disease/Condition", Validators.required);
+    this.fetchDiseases();
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : (value.name + value.synonym)),
+        map(name => name ? this._filter(name) : this.diseases.slice())
+      );
+    
   }
+  fetchDiseases(){
+    this.http.get(`http://127.0.0.1:5000/diseases/all`, this.login.optionByAuthorization())
+    .subscribe((data: any) => {
+      this.diseases.push({name: 'abc', synonym:'x'})
+    });
+  }
+  displayFn(disease?: Disease): string | undefined {
+    return disease ? disease.name : undefined;
+  }
+  private _filter(name: string): Disease[] {
+    const filterValue = name.toLowerCase();
 
+    return this.diseases.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0 || option.synonym.toLowerCase().indexOf(filterValue) ===0);
+  }
   remove(index) {
     this.conTable.splice(index, 1);
   }
@@ -94,20 +131,24 @@ export class ConcentrationTableComponent implements OnInit {
       }
 
     });
-
-
-
-
-
   }
 
   analyze() {
     const selectedMethod = this.selectedMethod;
-    let data = {
-      "name": this.analyzeName.value,
-      "public": this.isPublic.value,
-      "concentration_changes": _.fromPairs(this.conTable)
-    };
+
+    let data = {}
+    if(localStorage.getItem('isMultiple') == 'True'){
+        // assign the data came from API as data
+
+    }
+    else{
+      let name = this.analyzeName.value;
+      data = {
+        "study_name": this.analyzeName.value,
+        "public": this.isPublic.value,
+        "analysis": { [name] : { "Metabolites": _.fromPairs(this.conTable)}}
+      };
+    }
     if (selectedMethod === this.methods.Metabolitics) {
       this.metabolitics(data);
     }

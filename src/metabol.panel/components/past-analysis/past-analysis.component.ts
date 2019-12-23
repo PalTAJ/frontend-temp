@@ -14,7 +14,6 @@ import * as _ from 'lodash';
   styleUrls: ['./past-analysis.component.css']
 })
 export class PastAnalysisComponent implements OnInit {
-
   data = { list: [], disease: [], public: [], results: [] };
   form = new FormGroup({});
 

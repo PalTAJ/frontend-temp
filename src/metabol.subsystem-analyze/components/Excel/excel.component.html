@@ -1,0 +1,124 @@
+<div>
+  <h2>Study: {{usersData2.study_name}} </h2>
+
+</div>
+
+<div class="row">
+
+
+    <div class="form-group col-mat-4">
+      <label    *ngIf="!login.isLoggedIn()">Email</label>
+      <input   [formControl]="analyzeEmail"  type="text" class="form-control" placeholder="Email" *ngIf="!login.isLoggedIn()">
+  
+    </div>
+  
+  <div class="form-group input-group">
+      <label>Disease / Physiological Condition</label>
+      <input [(ngModel)]="query" type="text" class="form-control" placeholder="Search for diseases..." (keyup)=getSearch(query)>
+    </div>
+  
+  
+  <div class="container-fluid">
+      <div class="row">
+        <div class="size-of-bar" *ngIf="filteredDiseases.length > 0">
+          
+            <div class="col-md-4" *ngIf="filteredDiseases.length > 0">
+                <div *ngFor="let r of filteredDiseases" id="change-color-on-mouse-over">
+                  <ul>
+                    <li>
+                      <a (click)="search(r.name)">
+                        <b>{{ r.synonym }}</b> {{r.name}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  
+  
+  
+
+  
+    <!-- <div class="form-group col-mat-4">
+      <label>Analyze Name</label>
+      <input [formControl]="analyzeName" type="text" class="form-control" placeholder="Analyze Name">
+      <span class="text-danger" *ngIf="!analyzeName.valid && analyzeName.dirty">
+        Field Required
+      </span>
+    </div> -->
+    <div class="form-group col-mat-4">
+      <label>Public or Private</label>
+      <div>
+  
+        <mat-slide-toggle [formControl]="isPublic">{{ isPublic.value ? 'Public' : 'Private' }}</mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+
+<!-- ################# table below  -->
+
+
+
+
+
+
+
+
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+        <th>Cases</th>
+        <td *ngFor="let name of cases">{{name}}</td>
+    </tr>
+    
+  </thead>
+
+  <tbody>
+    <tr>
+      <th>Label</th>
+      <td *ngFor="let label of labels">{{label}}</td>
+    </tr>
+    <tr> 
+      <th>Metabolites</th>
+    </tr>
+    </tbody>
+
+
+    <tbody>
+        <tr *ngFor="let r of usersData3;let i=index">
+          <!-- <td> </td> -->
+          <td *ngFor="let met of r">
+        {{met}}
+        </td>
+        </tr>
+        </tbody>
+
+
+</table>
+  
+
+
+<!-- ############### analysis dropdown menu -->
+
+
+
+<div class="row">
+    <div class="col-md-1">
+      <h4>Method:</h4>
+    </div>
+    <div class="col-md-3">
+      <select [(ngModel)]="selectedMethod" class="form-control">
+        <option *ngFor="let item of comboboxMethods" [ngValue]="item.id">{{item.name}}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <button (click)="analyze()" class="btn btn-default" >Analyze</button>
+    </div>
+  </div>
+
+<!-- <button (click)="analyze()" class="btn btn-default" >Analyze</button> -->

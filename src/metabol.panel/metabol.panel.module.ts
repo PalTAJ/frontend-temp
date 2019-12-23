@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { SubsystemAnalyzeModule } from "../metabol.subsystem-analyze";
 import { VisualizationModule } from '../metabol.visualization';
 import { MatSelectModule } from '@angular/material/select';
@@ -14,6 +13,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 // import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatTabsModule} from '@angular/material';
 import {MatExpansionModule} from '@angular/material/expansion';
+
 
 import {
   PanelComponent,
@@ -54,7 +54,6 @@ import { from } from 'rxjs';
     ReactiveFormsModule,
     FormsModule,
     MatTabsModule,
-    
     MatSelectModule,
     NgPipesModule,
     MatRippleModule,
@@ -62,7 +61,6 @@ import { from } from 'rxjs';
     NgxPaginationModule,
     NgxDatatableModule,
     HttpClientModule,
-
     PanelRoutesRouting,
     SubsystemAnalyzeModule,
     VisualizationModule,

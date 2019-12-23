@@ -39,9 +39,12 @@ export class CompareAnalysisComponent implements OnInit, AfterViewInit {
   }
 
   getAnalysesData(options) {
-    let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/set`;
+    console.log(options);
+    //let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/set`;
+    let apiUrl = `http://127.0.0.1:5000/analysis/set`;
     this.http.get(apiUrl, options)
       .subscribe((data:any) => this.analyses = data);
+      
     console.log(this.analyses);
   }
 

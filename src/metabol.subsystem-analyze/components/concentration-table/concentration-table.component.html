@@ -8,33 +8,31 @@
   </div>
 
 <!--  /////////////////////-->
-  <div class="form-group col-mat-4">
-    <label >Disease / Physiological Condition</label>
-    <input [formControl]="Disease" type="text" class="form-control" placeholder="Disease">
-    <span class="text-danger" *ngIf="!analyzeName.valid && analyzeName.dirty">
-      Field Required
-    </span>
+<div class="form-group input-group make-indentation">
+    <label>Disease / Physiological Condition</label>
+    <!-- <input [(ngModel)]="query" type="text" class="form-control" placeholder="Search for diseases..." (keyup)=getSearch(query)> -->
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Disease" aria-label="Disease / Physiological Condition" matInput [formControl]="myControl" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              <b>{{option.name}}</b> - {{option.synonym}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
   </div>
 
 <!--  ##########################-->
 
-
-
-
-
-
-
-
-
-
-  <div class="form-group col-mat-4">
+  <div class="form-group col-mat-4 make-indentation">
     <label>Analyze Name</label>
-    <input [formControl]="analyzeName" type="text" class="form-control" placeholder="Analyze Name">
+    <input [formControl]="analyzeName" type="text" class="form-control" placeholder="Analyze Name" style="width: 99% !important;">
     <span class="text-danger" *ngIf="!analyzeName.valid && analyzeName.dirty">
       Field Required
     </span>
   </div>
-  <div class="form-group col-mat-4">
+  <div class="form-group col-mat-4 make-indentation">
     <label>Public or Private</label>
     <div>
 

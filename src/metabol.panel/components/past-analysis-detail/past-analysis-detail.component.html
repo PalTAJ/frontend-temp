@@ -1,8 +1,19 @@
-
-<div >
+<div class="col-md-12">
+<div class="col-md-4">
+    <mat-form-field>
+        <label style="float: left;">Cases of the study</label>
+        <mat-select style="float: left !important;" [(ngModel)]="selectedObj" (selectionChange)="doSomething()">
+          <mat-option *ngFor="let analysis of data.analyses | orderBy:'name'" [value]="analysis.id">
+              {{analysis.name}} 
+              <!-- <a [routerLink]="['/past-analysis', analysis.id]"><div style="width: 100%;">  {{analysis.name}}</div></a> </mat-option> -->
+              <!-- <a [routerLink]="['/past-analysis', analysis.id]">{{analysis.name}}</a>--></mat-option> 
+        </mat-select>
+    </mat-form-field>
+    </div>
+<div class="col-md-8" style="padding-top: 20px;float: left;">
   <!-- <mat-form-field style="margin-left: 60px;"> -->
 
-  <mat-accordion>
+  <mat-accordion style="text-align:left;">
     <mat-expansion-panel  class="spacee">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -39,23 +50,8 @@
     </mat-expansion-panel>  </mat-accordion>
   <!-- </mat-form-field> -->
 </div>
-
-
-
-
-
-
-
-
-<mat-form-field>
-    <label class="form-control">Cases of the study</label>
-    <mat-select class="form-control" [(ngModel)]="selectedObj" (selectionChange)="doSomething()">
-      <mat-option *ngFor="let analysis of data.analyses | orderBy:'name'" [value]="analysis.id">
-          {{analysis.name}} 
-          <!-- <a [routerLink]="['/past-analysis', analysis.id]"><div style="width: 100%;">  {{analysis.name}}</div></a> </mat-option> -->
-          <!-- <a [routerLink]="['/past-analysis', analysis.id]">{{analysis.name}}</a>--></mat-option> 
-    </mat-select>
-</mat-form-field>
+</div>
+<hr>
 <h1>
     {{data?.study_name}} - {{ data?.case_name }} - ({{data?.method}}) <!--({{data?.status ?  'done' : 'running' }})-->
 </h1>

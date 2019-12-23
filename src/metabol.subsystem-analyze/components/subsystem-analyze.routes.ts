@@ -8,6 +8,8 @@ import { ManualComponent } from './manual/manual.component';
 import { UploadComponent } from './upload/upload.component';
 import { SubsystemAnalyzeComponent } from './subsystem-analyze.component';
 import { MeasurementComponent } from './measurement/measurement.component';
+import{ExcelComponent} from './Excel';
+import { from } from 'rxjs';
 
 export const SubsystemAnalyzeRoutes: Routes = [
   {
@@ -19,6 +21,7 @@ export const SubsystemAnalyzeRoutes: Routes = [
       { path: 'upload', component: UploadComponent },
       { path: 'measurement', component: MeasurementComponent },
       { path: 'sample', component: SampleComponent },
+      { path: 'excel-data', component: ExcelComponent },
       { path: '', redirectTo: 'measurement', pathMatch: 'full' }
     ]
   }

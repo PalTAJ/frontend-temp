@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRippleModule } from '@angular/material';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { MatFormFieldModule, MatInputModule , MatSelectModule } from '@angular/material';
+import {MatTableModule} from '@angular/material/table';
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 import {
@@ -13,6 +15,7 @@ import {
   MeasurementComponent,
   UploadComponent,
   SampleComponent,
+  ExcelComponent,
   SubsystemAnalyzeComponent
 } from './components';
 
@@ -26,6 +29,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     FormsModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
+    MatAutocompleteModule,
+    MatTableModule,
     MatFormFieldModule,
     MatInputModule ,
     MatSelectModule,
@@ -41,6 +46,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MeasurementComponent,
     UploadComponent,
     SampleComponent,
+    ExcelComponent,
     SubsystemAnalyzeComponent
   ],
   exports: [

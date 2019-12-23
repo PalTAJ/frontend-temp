@@ -34,6 +34,8 @@ import { MatSelectModule} from '@angular/material/select';
 import { MatInputModule} from '@angular/material/input';
 import { HttpModule } from '@angular/http';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
@@ -66,6 +68,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     HttpClientModule,
     HttpModule,
     MatExpansionModule,
+    MatTableModule,
 
     MetabolCommonModule,
     DocumentationModule,

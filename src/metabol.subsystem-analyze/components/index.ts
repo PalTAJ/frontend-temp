@@ -5,6 +5,6 @@ export * from './manual'
 export * from './measurement'
 export * from './upload';
 export * from './sample';
-
+export * from './Excel';
 
 export * from './subsystem-analyze.component';

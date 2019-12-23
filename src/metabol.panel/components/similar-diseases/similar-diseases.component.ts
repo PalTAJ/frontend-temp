@@ -21,9 +21,13 @@ export class SimilarDiseasesComponent implements OnInit {
 
   ngOnInit() {
     // let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/most-similar-diseases/${this.id}`;
-    // let apiUrl = `http://127.0.0.1:5000/analysis/most-similar-diseases/${this.id}`;
-    // this.http.get(apiUrl, this.login.optionByAuthorization())
-    //   .subscribe((d:any) => this.diseases = _.orderBy(_.toPairs(d), '1', 'desc'));
+    let apiUrl = `http://127.0.0.1:5000/analysis/most-similar-diseases/${this.id}`;
+    this.http.get(apiUrl, this.login.optionByAuthorization())
+      .subscribe((d:any) => {   
+          this.diseases = _.orderBy(_.toPairs(d), '1', 'desc')
+          console.log(this.diseases);
+      });
+    
   }
 
 }

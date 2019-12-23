@@ -147,6 +147,11 @@ export class UploadComponent {
           const recData = data as JSON;
           console.log(recData);
 
+          localStorage.setItem('metabolitics-data', JSON.stringify(recData));
+          this.router.navigate(['/analyze/excel-data']);
+
+
+
 
         },
         err => {
@@ -195,15 +200,8 @@ export class UploadComponent {
       }).subscribe(data => {
           const recData = data as JSON;
           console.log(recData);
-          // localStorage.setItem('excel-meta3', JSON.stringify(recData[4]));
-          // localStorage.setItem('excel-meta2', JSON.stringify(recData[3]));
-          // localStorage.setItem('excel-meta1', JSON.stringify(recData[2]));
-          // localStorage.setItem('excel-dataa', JSON.stringify(recData[1]));
-          //
-          // //// Testing using data without processing in api
-          // localStorage.setItem('excel-test', JSON.stringify(data2));
-          // localStorage.setItem('excel-test2', JSON.stringify(meta));
-          // this.router.navigate(['/analyze/excel-data']);
+          localStorage.setItem('metabolitics-data', JSON.stringify(recData));
+          this.router.navigate(['/analyze/excel-data']);
 
         },
         err => {
