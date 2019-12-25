@@ -2,7 +2,7 @@
 <div class="col-md-4">
     <mat-form-field>
         <label style="float: left;">Cases of the study</label>
-        <mat-select style="float: left !important;" [(ngModel)]="selectedObj" (selectionChange)="doSomething()">
+        <mat-select style="float: left !important;" [(ngModel)]="selectedObj" (selectionChange)="reloadAnalysis()">
           <mat-option *ngFor="let analysis of data.analyses | orderBy:'name'" [value]="analysis.id">
               {{analysis.name}} 
               <!-- <a [routerLink]="['/past-analysis', analysis.id]"><div style="width: 100%;">  {{analysis.name}}</div></a> </mat-option> -->

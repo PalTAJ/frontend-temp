@@ -25,13 +25,10 @@
 
 
       </div>
-    </div>
+    <!-- </div> -->
 
-<div *ngIf="conTable.length">
-  <concentration-table [conTable]="conTable"></concentration-table>
-</div>
 
-<!--##################-->
+
 
 
 <div class="form-horizontal">
@@ -60,6 +57,7 @@
 
 
   </div>
+</div>
 
 
 
@@ -69,51 +67,6 @@
 
 
 
-
-
-
-
-
-
-
-<!--<h3> Metabolitics Format Uploading </h3>-->
-<!--<div class="form-group">-->
-<!--  <label class="col-sm-1 control-label">Excel:</label>-->
-<!--  <div class=" col-sm-10 col-md-4">-->
-<!--    &lt;!&ndash;<input type="file" name="files[]" multiple id="jsonFile" accept=".xlsx" (change)="Excelupload2($event)" />&ndash;&gt;-->
-
-<!--    <input type="file" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file" accept=".xlsx">-->
-<!--    <p>See Metabolitics file format from-->
-<!--      <a href="assets/example-analyze-doc-files/Metabolitics.xlsx" download="Metabolitics.xlsx">-->
-<!--        this example file.</a></p>-->
-<!--    &lt;!&ndash;<button type="button" class="btn btn-info" (click)="ExcelUpload()" >Upload</button>&ndash;&gt;-->
-
-<!--  </div>-->
-<!--</div>-->
-
-
-<!--<br>-->
-<!--<h3> Workbench Format Uploading </h3>-->
-<!--<div class="form-group">-->
-<!--  <label class="col-sm-1 control-label">File:</label>-->
-<!--  <div class=" col-sm-10 col-md-4">-->
-<!--    <input type="file" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file" accept=".txt">-->
-<!--    <p>See Metabolitics file format from-->
-<!--      <a href="assets/example-analyze-doc-files/ST000001_AN000001.txt" download="ST000001_AN000001.txt">-->
-<!--        this example file.</a></p>-->
-
-<!--  </div>-->
-<!--</div>-->
-
-
-<!--<h3> Metabolimics Workbench Format </h3>-->
-<!--<div class="form-group">-->
-<!--  <label class="col-sm-1 control-label">File:</label>-->
-<!--  <div class=" col-sm-10 col-md-4">-->
-<!--    <input type="file" style="display: inline-block;" (change)="incomingfile($event)" placeholder="Upload file" accept=".txt">-->
-<!--    <p>See Metabolimics Workbench file format from-->
-<!--      <a href="assets/example-analyze-doc-files/ST000001_AN000001.txt" download="ST000001_AN000001.txt">-->
-<!--        this example file.</a></p>-->
-
-<!--  </div>-->
-<!--</div>-->
+  <div *ngIf="conTable.length">
+    <concentration-table [conTable]="conTable"></concentration-table>
+  </div>

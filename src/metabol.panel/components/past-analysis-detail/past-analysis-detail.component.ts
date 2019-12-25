@@ -147,7 +147,7 @@ export class PastAnalysisDetailComponent implements OnInit {
       return false;
     }
   }
-  doSomething () {
+  reloadAnalysis () {
     //update the ui
     // console.log("Worked");
     // console.log(this.selectedObj);

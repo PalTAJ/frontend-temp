@@ -78,7 +78,7 @@ export class ConcentrationTableComponent implements OnInit {
     this.form = this.createForm();
     this.analyzeName = new FormControl("My Analyze", Validators.required);
     this.isPublic = new FormControl(true, Validators.required);
-    this.analyzeEmail = new FormControl("Email", Validators.required); //Disease
+    this.analyzeEmail = new FormControl("Email", Validators.required); 
     this.Disease = new FormControl("Disease/Condition", Validators.required);
     this.fetchDiseases();
     this.filteredOptions = this.myControl.valueChanges
@@ -92,7 +92,11 @@ export class ConcentrationTableComponent implements OnInit {
   fetchDiseases(){
     this.http.get(`http://127.0.0.1:5000/diseases/all`, this.login.optionByAuthorization())
     .subscribe((data: any) => {
-      this.diseases.push({name: 'abc', synonym:'x'})
+      //console.log(data);
+      data.forEach(element => {
+        this.diseases.push({name: element['name'], synonym: element['synonym']})
+      });
+      //this.diseases.push({name: 'abc', synonym:'x'})
     });
   }
   displayFn(disease?: Disease): string | undefined {

@@ -93,8 +93,8 @@ export class AnalysisSearchComponent implements OnInit {
   form: FormGroup;
   form2: FormGroup;
 
-  metabol ;
-  changeM = '0';
+  metabol = FormControl ;
+  changeM = FormControl;
   qualifierM = 'none';
   amount2 = ' Diff Amount';
   Disease2 = 'Disease / Physiological Condition';
@@ -123,7 +123,8 @@ export class AnalysisSearchComponent implements OnInit {
     this.loader.get('recon2', (recon) => {
       this.pathways = Object.keys(recon.pathways).sort();
     });
-
+    console.log(this.pathways);
+    console.log(this.metabols);
     this.form = this.fb.group({
       pathway: ["", Validators.required],
       change: ["", Validators.required],
@@ -136,20 +137,14 @@ export class AnalysisSearchComponent implements OnInit {
     this.form2 = this.fb.group({
       metabol: ["", Validators.required],
       changeM: ["", Validators.required],
-      DiseaseM: [],
-      qualifierM: [],
-      amountM: []
     });
 
 
     this.filteredPathways = this.form.controls.pathway.valueChanges
     //.startWith(null)
       .pipe(map(val => val ? this.filter(val).sort() : this.pathways.slice()));
-
-
-  //   this.filteredMetabols = this.form.controls.metabols
-  //     .pipe(map(val => val ? this.filter(val).sort() : this.metabols.slice()));
-  //
+    // this.filteredMetabols = this.form2.controls.metabol.valueChanges
+      // .pipe(map(val => val ? this.filterMetabols(val).sort() : this.metabols.slice()));
   }
 
   filter(val: string): string[] {
@@ -170,49 +165,39 @@ export class AnalysisSearchComponent implements OnInit {
     this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
+        console.log(data);
         localStorage.setItem('search-results', JSON.stringify(data));
         this.router.navigate(['past-analysis']);
       });
   }
 
+  // filterMetabols(val: string): string[] {
+  //   console.log(this.filteredMetabols);
+    
+  //   return this.metabols.filter(option => new RegExp(`^${val}`, 'gi').test(option));
+  // }
 
-  /////////////////
+  // removeMetabol(index) {
+  //   this.metabolChanges.splice(index, 1);
+  // }
 
+  // addMetabol(value) {
+  //   this.metabolChanges.push(value);
+  //   // this.form2.reset();
+  // }
 
+  searchMetabol() {
+    let data2 = {"metabol":this.metabol,'change':this.changeM}
+    console.log(data2);
 
-filter2(val: string): string[] {
-  return this.metabols.filter(option => new RegExp(`^${val}`, 'gi').test(option));
-}
+    // this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
+    this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-metabol`,data2)
 
-remove2(index) {
-  this.metabolChanges.splice(index, 1);
-}
-
-add2(value) {
-  this.metabolChanges.push(value);
-  this.form.reset();
-}
-
-
-searchMB() {
-    this.httpClient.post('http://127.0.0.1:5000/metabol-searh',{
-      name: this.metabol.value, change : this.changeM , qualifier : this.qualifierM, amount : this.amount2, dis : this.Disease2 }).subscribe(data => {
-        // this.recData = data as JSON;
-        // this.idData = JSON.parse(this.recData[1]);
-        // this.conTable = this.idData
-        // localStorage.removeItem('search-metabol');
-
-        localStorage.setItem('search-m2', JSON.stringify(data));
+      .subscribe((data:any) => {
         console.log(data);
-        this.router.navigate(['past-analysis-metabols']);
 
-      },
-      err => {
-        console.log("Error occured");
-      }
-    );
-    console.log(this.metabol.value);
+        localStorage.setItem('search-results', JSON.stringify(data));
+        // this.router.navigate(['past-analysis']);
+      });
   }
-  //////////////////
-
 }
