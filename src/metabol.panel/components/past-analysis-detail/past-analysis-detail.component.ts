@@ -38,21 +38,6 @@ export class PastAnalysisDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
-  // ngOnInit() {
-  //   this.route.params.subscribe((params) => {
-  //     this.id = params['key'];
-  //     this.getData();
-  //   });
-  // }
-
-  // getData() {
-  //   let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
-  //   this.http.get(apiUrl, this.login.optionByAuthorization())
-  //     .subscribe((data:any) => {
-  //       this.data = data;
-  //       // console.log(this.data);
-  //     });
-  // }
   ngOnInit() {
 
 
@@ -64,7 +49,6 @@ export class PastAnalysisDetailComponent implements OnInit {
         this.getResult();
       }
       else if (this.isInteger(this.id)) {
-        // apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
         this.selectedObj = parseInt(this.id);
         this.getData();
       }
@@ -76,8 +60,8 @@ export class PastAnalysisDetailComponent implements OnInit {
 
   getData() {
     this.selectedMethod = '0';
-    let apiUrl = `http://127.0.0.1:5000/analysis/detail/${this.id}`;
-    //let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
+    // let apiUrl = `http://127.0.0.1:5000/analysis/detail/${this.id}`;
+    let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
     this.http.get(apiUrl, this.login.optionByAuthorization())
       .subscribe((data: any) => {
         // console.log(data);
@@ -118,7 +102,7 @@ export class PastAnalysisDetailComponent implements OnInit {
       }
   }
   getResult() {
-    this.http.get('http://127.0.0.1:5000/analysis/direct-pathway-mapping', this.login.optionByAuthorization())
+    this.http.get(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`, this.login.optionByAuthorization())
       .subscribe((data: any) => {
         // console.log(data);
         // console.log(Object.keys(data['results_reaction'][0]).length);

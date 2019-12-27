@@ -18,6 +18,7 @@ import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import { map } from 'rxjs/operators';
 
 export interface Disease {
+  id: number;
   name: string;
   synonym: string;
 }
@@ -31,11 +32,8 @@ export interface Disease {
 export class ConcentrationTableComponent implements OnInit {
   @Input() conTable: Array<[string, number]> = [];
   myControl = new FormControl();
-  // options: Disease[] = [
-  //   {name: 'abc', synonym: 'x'},
-  //   {name: 'xyz', synonym: 'a'},
-  //   {name: 'cde', synonym: 'b'}
-  // ];
+
+
   diseases: Disease[]= [];
   filteredOptions: Observable<Disease[]>;
 
@@ -45,7 +43,6 @@ export class ConcentrationTableComponent implements OnInit {
   test: JSON;
   query: string;
   filteredDiseases=[];
-
 
   form: FormGroup;
   analyzeName: FormControl;
@@ -57,8 +54,8 @@ export class ConcentrationTableComponent implements OnInit {
 
   comboboxMethods: Array<object> = [
     { id: 0, name: "Metabolitics" },
-    { id: 1, name: "Direct Pathway Mapping" },
-    { id: 2, name: "Pathway Enrichment"}
+    { id: 1, name: "Direct Pathway Mapping" }
+    // { id: 2, name: "Pathway Enrichment"}
   ];
   methods = {
     Metabolitics: 0,
@@ -90,11 +87,13 @@ export class ConcentrationTableComponent implements OnInit {
     
   }
   fetchDiseases(){
-    this.http.get(`http://127.0.0.1:5000/diseases/all`, this.login.optionByAuthorization())
+        this.http.get(`${AppSettings.API_ENDPOINT}/diseases/all`, this.login.optionByAuthorization())
+
+    // this.http.get(`http://127.0.0.1:5000/diseases/all`, this.login.optionByAuthorization())
     .subscribe((data: any) => {
       //console.log(data);
       data.forEach(element => {
-        this.diseases.push({name: element['name'], synonym: element['synonym']})
+        this.diseases.push({id: element['id'], name: element['name'], synonym: element['synonym']})
       });
       //this.diseases.push({name: 'abc', synonym:'x'})
     });
@@ -150,7 +149,9 @@ export class ConcentrationTableComponent implements OnInit {
       data = {
         "study_name": this.analyzeName.value,
         "public": this.isPublic.value,
-        "analysis": { [name] : { "Metabolites": _.fromPairs(this.conTable)}}
+        "analysis": { [name] : { "Metabolites": _.fromPairs(this.conTable), "Label": "not_provided"}},
+        "group": "not_provided",
+        "disease":this.myControl.value["id"]
       };
     }
     if (selectedMethod === this.methods.Metabolitics) {
@@ -164,10 +165,11 @@ export class ConcentrationTableComponent implements OnInit {
     }
   }
   metabolitics(data) {
-    // this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
-    this.http.post(`http://127.0.0.1:5000/analysis/fva`,
+    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
+    // this.http.post(`http://127.0.0.1:5000/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
+        // console.log(this.login.optionByAuthorization());
         this.notify.info('Analysis Start', 'Analysis in progress');
         this.router.navigate(['/past-analysis', data['id']]);
       },
@@ -177,11 +179,13 @@ export class ConcentrationTableComponent implements OnInit {
   }
 
   directPathwayMapping(data) {
-     console.log("Running...");
-     this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
+    //  console.log("Running...");
+      this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
+
+    //  this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-           console.log(data);
+          //  console.log(data);
            this.notify.info('Analysis Start', 'Analysis in progress');
            this.notify.success('Analysis Done', 'Analysis is successfully done');
            this.router.navigate(['/past-analysis', data['id']]);

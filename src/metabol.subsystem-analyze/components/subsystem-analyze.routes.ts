@@ -15,7 +15,7 @@ export const SubsystemAnalyzeRoutes: Routes = [
   {
     path: 'analyze',
     component: SubsystemAnalyzeComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: 'manual', component: ManualComponent },
       { path: 'upload', component: UploadComponent },

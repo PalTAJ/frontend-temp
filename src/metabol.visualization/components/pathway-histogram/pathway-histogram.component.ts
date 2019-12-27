@@ -27,7 +27,7 @@ export class PathwayHistogramComponent implements OnInit, AfterViewInit {
   ngOnInit() { }
 
   ngAfterViewInit() {
-    console.log(this.pathwayScores);
+    // console.log(this.pathwayScores);
     this.data[0].x = Object.keys(this.pathwayScores[0]);
     this.data[0].y = [];
 

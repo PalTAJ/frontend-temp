@@ -53,7 +53,7 @@
 </div>
 <hr>
 <h1>
-    {{data?.study_name}} - {{ data?.case_name }} - ({{data?.method}}) <!--({{data?.status ?  'done' : 'running' }})-->
+    {{data?.study_name}} - {{ data?.case_name }} - ({{data?.method}}) - {{data?.disease}} <!--({{data?.status ?  'done' : 'running' }})-->
 </h1>
 <div *ngIf="data?.results_pathway">
   <div>

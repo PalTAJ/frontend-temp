@@ -29,6 +29,7 @@ export class ResultTableComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges() {
+    // console.log(this.data);
     let tableData = Object.keys(this.data[0].results_pathway[0])
       .map(x => ({ name: x }));
 

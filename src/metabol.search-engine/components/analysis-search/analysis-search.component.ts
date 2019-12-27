@@ -123,8 +123,8 @@ export class AnalysisSearchComponent implements OnInit {
     this.loader.get('recon2', (recon) => {
       this.pathways = Object.keys(recon.pathways).sort();
     });
-    console.log(this.pathways);
-    console.log(this.metabols);
+    // console.log(this.pathways);
+    // console.log(this.metabols);
     this.form = this.fb.group({
       pathway: ["", Validators.required],
       change: ["", Validators.required],
@@ -161,8 +161,8 @@ export class AnalysisSearchComponent implements OnInit {
   }
 
   search() {
-    // this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
-    this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
+    this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
+    // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
         console.log(data);
@@ -186,18 +186,18 @@ export class AnalysisSearchComponent implements OnInit {
   //   // this.form2.reset();
   // }
 
-  searchMetabol() {
-    let data2 = {"metabol":this.metabol,'change':this.changeM}
-    console.log(data2);
+  // searchMetabol() {
+  //   let data2 = {"metabol":this.metabol,'change':this.changeM}
+  //   // console.log(data2);
 
-    // this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
-    this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-metabol`,data2)
+  //   // this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
+  //   // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-metabol`,data2)
 
-      .subscribe((data:any) => {
-        console.log(data);
+  //     .subscribe((data:any) => {
+  //       // console.log(data);
 
-        localStorage.setItem('search-results', JSON.stringify(data));
-        // this.router.navigate(['past-analysis']);
-      });
-  }
+  //       localStorage.setItem('search-results', JSON.stringify(data));
+  //       // this.router.navigate(['past-analysis']);
+  //     });
+  // }
 }

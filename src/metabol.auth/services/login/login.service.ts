@@ -14,8 +14,8 @@ export class LoginService {
       username: loginForm.Email,
       password: loginForm.Password
     };
-    // this.http.post(`${AppSettings.API_ENDPOINT}/auth`, tokenData)
-    this.http.post(`http://127.0.0.1:5000/auth`, tokenData)
+    this.http.post(`${AppSettings.API_ENDPOINT}/auth`, tokenData)
+    // this.http.post(`http://127.0.0.1:5000/auth`, tokenData)
       .subscribe((data: any) => {
         callback(data);
         this.notify.success('Login Successful', 'Welcome');

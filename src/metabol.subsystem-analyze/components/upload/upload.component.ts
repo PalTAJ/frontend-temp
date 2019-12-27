@@ -16,6 +16,7 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 import { HttpClientModule } from '@angular/common/http';
 // import { HttpModule } from '@angular/http';
 
+import { AppSettings } from '../../../app/';
 
 
 
@@ -62,10 +63,10 @@ export class UploadComponent {
     myReader.onload = (e: any) =>{
     // this.temp = JSON.parse(JSON.stringify(e.target.result));
     this.temp = JSON.parse(e.target.result);
-    console.log(this.temp);
+    // console.log(this.temp);
     for (let t in this.temp){
-      console.log(t);
-      console.log(this.temp[t]);
+      // console.log(t);
+      // console.log(this.temp[t]);
 
       this.subSerivce.getJSON(file2).subscribe(data => {
         if (data[t] === null || data[t] === undefined || data[t] === "" || data[t].lenght === 0) {
@@ -75,7 +76,7 @@ export class UploadComponent {
         } else { // if mapping is needed(in other way if mapping name exist in our combined database )
           this.ooldM = t;
           t = data[t] + " \t(" + this.ooldM + ")";
-          console.log(t);
+          // console.log(t);
         }
         this.conTable.push([t,this.temp[t]]);
 
@@ -122,7 +123,7 @@ export class UploadComponent {
           } else { // if mapping is needed(in other way if mapping name exist in our combined database )
             this.ooldM = c[0];
             c[0] = data[c[0]] + " \t(" + this.ooldM + ")";
-            console.log(c);
+            // console.log(c);
           }
         });
         this.conTable.push(c);
@@ -141,11 +142,11 @@ export class UploadComponent {
     fileReader.onload = (e) => {
       // console.log(fileReader.result);
 
-      this.httpClient.post('http://127.0.0.1:5000/workbench', {
+      this.httpClient.post(`${AppSettings.API_ENDPOINT}/workbench`, {
         data: fileReader.result
       }).subscribe(data => {
           const recData = data as JSON;
-          console.log(recData);
+          // console.log(recData);
 
           localStorage.setItem('metabolitics-data', JSON.stringify(recData));
           this.router.navigate(['/analyze/excel-data']);
@@ -195,11 +196,11 @@ export class UploadComponent {
       // console.log(data2);
       // console.log(meta);
 
-      this.httpClient.post('http://127.0.0.1:5000/excel', {
+      this.httpClient.post(`${AppSettings.API_ENDPOINT}/excel`, {
         data: data2, meta: meta
       }).subscribe(data => {
           const recData = data as JSON;
-          console.log(recData);
+          // console.log(recData);
           localStorage.setItem('metabolitics-data', JSON.stringify(recData));
           this.router.navigate(['/analyze/excel-data']);
 

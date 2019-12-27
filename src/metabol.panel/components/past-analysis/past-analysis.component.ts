@@ -22,7 +22,9 @@ export class PastAnalysisComponent implements OnInit {
     private fb: FormBuilder,
     private login: LoginService,
     private actRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) { 
+
+    }
 
   ngOnInit() {
     this.actRoute.params.subscribe(params => {
@@ -49,29 +51,34 @@ export class PastAnalysisComponent implements OnInit {
   }
 
   getData(type: string) {
-    // let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/${type}`;
-    let apiUrl = `http://127.0.0.1:5000/analysis/${type}`;
+    let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/${type}`;
+    // let apiUrl = `http://127.0.0.1:5000/analysis/${type}`;
     this.http.get(apiUrl, this.login.optionByAuthorization())
 
       .subscribe((d:any) => {
         this.data[type] = d;
         this.createForm();
       });
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   createForm() {
     let combined_data = [];
+
     for (let t in this.data)
       combined_data = combined_data.concat(this.data[t]);
+      // console.log(combined_data);
 
     this.form = this.fb.group(_.zipObject(combined_data.map(x => x.id),
-      _.times(combined_data.length, _.constant([false]))));
+      _.times(combined_data.length, _.constant([false]))),
+  
+      
+      );
+      
   }
 
   submit() {
     let selecteds = _.toPairs(this.form.value).filter(x => x[1]).map(x => x[0]);
-    console.log(selecteds);
     this.router.navigate(['compare-analysis', selecteds]);
   }
 

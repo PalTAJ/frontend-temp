@@ -68,13 +68,13 @@ export class EscherService {
   buildPathwayMap(pathway, model, element, fluxes, callback?: (d) => void) {
     let pathwayName = pathway.split(' ').join('-').split('/').join('-').toLowerCase();
     if (fluxes){
-      console.log(fluxes);
+      // console.log(fluxes);
       this.options['first_load_callback'] = builder => {
         builder.set_reaction_data(fluxes['reaction_data']);
         builder.set_metabolite_data(fluxes['fold_changes']);
       }
     }
-    console.log(this.options);
+    // console.log(this.options);
     this.http.get(`assets/datasets/visualizations/${pathwayName}.json`)
       .subscribe((data:any) => {
         let m = escher.Builder(data, this.escherModelForPathway(model, pathway), null, element, this.options);

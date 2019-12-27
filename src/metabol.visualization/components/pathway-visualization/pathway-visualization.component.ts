@@ -24,7 +24,7 @@ export class PathwayVisualizationComponent implements OnChanges {
     private http: HttpClient) { }
 
   ngOnChanges() {
-    console.log("Pathway Name: " + this.name);
+    // console.log("Pathway Name: " + this.name);
     this.loader.get('recon2', (recon) => {
       let element = d3.select(this.elementRef.nativeElement).select('#map_container_3');
       this.escher.buildPathwayMap(this.name, recon, element, this.fluxes, (m) => {

@@ -25,7 +25,7 @@ export class SubsystemAnalyzeService {
   }
 
   public getJSON(file): Observable<any> {
-    return this.http.get('http://localhost:4200/assets/datasets/naming/' + file);
+    return this.http.get('80:80/assets/datasets/naming/' + file);
   }
 
   /**

@@ -8,18 +8,24 @@ import {FormBuilder} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
 import {Subject} from 'rxjs/Subject';
+import { AppSettings } from '../../../app/';
+
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationsService } from 'angular2-notifications';
 import { AppDataLoader } from '../../../metabol.common/services';
 import { HttpClient } from '@angular/common/http';
 import { SubsystemAnalyzeService } from "../../services/subsystem-analyze/subsystem-analyze.service";
-
-
-
-
+import {Observable} from 'rxjs';
+import {startWith} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
+export interface Disease2 {
+  id: number;
+  name: string;
+  synonym: string;
+}
 
 @Component({
   selector: 'app-manual',
@@ -38,13 +44,15 @@ export class ExcelComponent implements OnInit {
   labels=[];
   metaboliteNames=[];
 
+  myControl = new FormControl();
 
+  diseases: Disease2[]= [];
+  filteredOptions: Observable<Disease2[]>;
 
   data;
   data2;
   data3;
   test: JSON;
-  diseases;
   query: string;
   filteredDiseases=[];
 
@@ -101,7 +109,12 @@ export class ExcelComponent implements OnInit {
     this.analyzeEmail = new FormControl("Email", Validators.required); //Disease
     this.Disease = new FormControl("Disease/Condition", Validators.required);
     this.fetchDiseases()
-
+    this.filteredOptions = this.myControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => typeof value === 'string' ? value : (value.name + value.synonym)),
+      map(name => name ? this._filter(name) : this.diseases.slice())
+    );
 
 
     // this.selected = "option2";
@@ -133,11 +146,6 @@ export class ExcelComponent implements OnInit {
 
 
 
-// console.log(this.usersData2);
-// console.log(this.cases);
-// console.log(this.metaboliteNames);
-
-
 
   localStorage.removeItem('metabolitics-data');
 
@@ -145,7 +153,7 @@ export class ExcelComponent implements OnInit {
   }
 
     onSubmit() {
-      console.log("Analyse under Construction")
+      // console.log("Analyse under Construction")
 
   
 
@@ -158,23 +166,34 @@ createForm() {
     "value": ["", Validators.pattern('[0-9]+(\\.[0-9]+)?')]
   });
 }
-
-
 fetchDiseases(){
-  this.http.get(`http://127.0.0.1:5000/diseases/all`, this.login.optionByAuthorization())
+  this.http.get(`${AppSettings.API_ENDPOINT}/diseases/all`, this.login.optionByAuthorization())
   .subscribe((data: any) => {
-    this.diseases = data;
+    //console.log(data);
+    data.forEach(element => {
+      this.diseases.push({id: element['id'], name: element['name'], synonym: element['synonym']})
+    });
+    //this.diseases.push({name: 'abc', synonym:'x'})
   });
+}
+displayFn(disease?: Disease2): string | undefined {
+  return disease ? disease.name : undefined;
+}
+private _filter(name: string): Disease2[] {
+  const filterValue = name.toLowerCase();
+
+  return this.diseases.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0 || option.synonym.toLowerCase().indexOf(filterValue) ===0);
 }
 
   analyze(){
-    console.log("Analyse under Construction")
+    // console.log("Analyse under Construction")
     // this.router.navigateByUrl('/past-analysis-multi/123');
 
     const selectedMethod = this.selectedMethod;
 
       
     this.usersData2['public'] = this.isPublic.value;
+    this.usersData2['disease'] = this.myControl.value["id"];
     if (selectedMethod === this.methods.Metabolitics) {
       this.metabolitics(this.usersData2);
     }
@@ -186,10 +205,10 @@ fetchDiseases(){
 
 
   metabolitics(data) {
-    console.log("Running...");
+    // console.log("Running...");
 
-    // this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
-    this.http.post(`http://127.0.0.1:5000/analysis/fva`,
+    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
+    // this.http.post(`http://127.0.0.1:5000/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
         this.notify.info('Analysis Start', 'Analysis in progress');
@@ -201,11 +220,13 @@ fetchDiseases(){
   }
 
   directPathwayMapping(data) {
-     console.log("Running...");
-     this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
+    // `${AppSettings.API_ENDPOINT}
+    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
+
+    //  this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-           console.log(data);
+          //  console.log(data);
            this.notify.info('Analysis Start', 'Analysis in progress');
            this.notify.success('Analysis Done', 'Analysis is successfully done');
            this.router.navigate(['/past-analysis', data['id']]);
