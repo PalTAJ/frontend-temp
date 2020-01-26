@@ -44,23 +44,22 @@ export class PastAnalysisDetailComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.id = params['key'];
-      // this.getData();
-      if (this.id === this.methods.DirectPathwayMapping) {
-        this.getResult();
-      }
-      else if (this.isInteger(this.id)) {
-        this.selectedObj = parseInt(this.id);
-        this.getData();
-      }
-      else {
-        this.router.navigate(['/past-analysis']);
-      }
+      this.getData();
+    //   // if (this.id === this.methods.DirectPathwayMapping) {
+    //   //   this.getResult();
+    //   // }
+    //   if (this.isInteger(this.id)) {
+    //     this.selectedObj = parseInt(this.id);
+    //     this.getData();
+    //   }
+    //   else {
+    //     this.router.navigate(['/past-analysis']);
+    //   }
     });
   }
 
   getData() {
     this.selectedMethod = '0';
-    // let apiUrl = `http://127.0.0.1:5000/analysis/detail/${this.id}`;
     let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/detail/${this.id}`;
     this.http.get(apiUrl, this.login.optionByAuthorization())
       .subscribe((data: any) => {
@@ -101,28 +100,28 @@ export class PastAnalysisDetailComponent implements OnInit {
         location.reload();
       }
   }
-  getResult() {
-    this.http.get(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`, this.login.optionByAuthorization())
-      .subscribe((data: any) => {
-        // console.log(data);
-        // console.log(Object.keys(data['results_reaction'][0]).length);
-        this.data = data;
-      });
-    this.selectedMethod = '1';
-    // this.data = JSON.parse(localStorage.getItem('search-results'));
-    // localStorage.removeItem('search-results');
-    // //let histogram = JSON.parse(localStorage.getItem('histogram'));
-    // //localStorage.removeItem('histogram');
-    // //this.data['histogram'] = histogram;
-    // let values = this.data['results_pathway'][0];
-    // let eliminated = {};
-    // let keys = _.keys(values)
-    //   .filter(x => !x.startsWith('Transport') && !x.startsWith('Exchange'));
-    // keys.forEach(function(key) {
-    //   eliminated[key] = values[key];
-    // });
-    // this.searchResults = new Array(eliminated);
-  }
+  // getResult() {
+  //   this.http.get(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`, this.login.optionByAuthorization())
+  //     .subscribe((data: any) => {
+  //       // console.log(data);
+  //       // console.log(Object.keys(data['results_reaction'][0]).length);
+  //       this.data = data;
+  //     });
+  //   this.selectedMethod = '1';
+  //   // this.data = JSON.parse(localStorage.getItem('search-results'));
+  //   // localStorage.removeItem('search-results');
+  //   // //let histogram = JSON.parse(localStorage.getItem('histogram'));
+  //   // //localStorage.removeItem('histogram');
+  //   // //this.data['histogram'] = histogram;
+  //   // let values = this.data['results_pathway'][0];
+  //   // let eliminated = {};
+  //   // let keys = _.keys(values)
+  //   //   .filter(x => !x.startsWith('Transport') && !x.startsWith('Exchange'));
+  //   // keys.forEach(function(key) {
+  //   //   eliminated[key] = values[key];
+  //   // });
+  //   // this.searchResults = new Array(eliminated);
+  // }
   isInteger(num) {
     try {
       return parseInt(num) ? true : false;

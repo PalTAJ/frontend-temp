@@ -146,6 +146,10 @@ export class ConcentrationTableComponent implements OnInit {
     }
     else{
       let name = this.analyzeName.value;
+
+
+
+      if (this.login.isLoggedIn()){
       data = {
         "study_name": this.analyzeName.value,
         "public": this.isPublic.value,
@@ -153,7 +157,26 @@ export class ConcentrationTableComponent implements OnInit {
         "group": "not_provided",
         "disease":this.myControl.value["id"]
       };
-    }
+    }  // if 
+
+
+    else{
+      data = {
+        "study_name": this.analyzeName.value,
+        "public": this.isPublic.value,
+        "analysis": { [name] : { "Metabolites": _.fromPairs(this.conTable), "Label": "not_provided"}},
+        "group": "not_provided",
+        "disease":this.myControl.value["id"],
+        "email":this.analyzeEmail.value
+      };
+    } // inner else 
+
+
+    }  // else 
+
+    console.log(data);
+
+
     if (selectedMethod === this.methods.Metabolitics) {
       this.metabolitics(data);
     }
@@ -164,28 +187,48 @@ export class ConcentrationTableComponent implements OnInit {
       this.metaboliteEnrichment(data);
     }
   }
+
+
   metabolitics(data) {
+
+    if (this.login.isLoggedIn()){
+
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
-    // this.http.post(`http://127.0.0.1:5000/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
-        // console.log(this.login.optionByAuthorization());
         this.notify.info('Analysis Start', 'Analysis in progress');
         this.router.navigate(['/past-analysis', data['id']]);
       },
         error => {
           this.notify.error('Analysis Fail', error);
         });
+  } // if 
+  else{
+    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
+      data)
+      .subscribe((data: any) => {
+        this.notify.info('Analysis Start', 'Results will be sent by email.');
+        this.router.navigate(['/search']);
+      },
+        error => {
+          this.notify.error('Analysis Fail', error);
+        });
+
+        // this.router.navigate(['/search']);
+
+  }//else 
+
+
   }
 
-  directPathwayMapping(data) {
-    //  console.log("Running...");
-      this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
 
-    //  this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
+
+  directPathwayMapping(data) {
+
+    if (this.login.isLoggedIn()){
+      this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-          //  console.log(data);
            this.notify.info('Analysis Start', 'Analysis in progress');
            this.notify.success('Analysis Done', 'Analysis is successfully done');
            this.router.navigate(['/past-analysis', data['id']]);
@@ -193,15 +236,32 @@ export class ConcentrationTableComponent implements OnInit {
          error => {
          this.notify.error('Analysis Fail', error);
       });
-    // data['results_pathway'] = [this.scorePathways(data['concentration_changes'])];
-    // data['results_reaction'] = [this.scoreReactions(data['concentration_changes'])];
-    // data['results_metabolite'] = [data['concentration_changes']];
+
     localStorage.setItem('search-results', JSON.stringify(data));
-    // localStorage.setItem('histogram', JSON.stringify(pathwayScores));
-    // this.router.navigate(['/past-analysis', 'direct-pathway-mapping']);
+    } // if
+else{
+  this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping/public`,
+  data, this.login.optionByAuthorization())
+  .subscribe((data:any) => {
+    this.notify.info('Analysis Start', 'Analysis in progress');
+    this.notify.success('Analysis Done', 'Analysis Results sent to your email');
+    this.router.navigate(['/search']);
+      },
+  error => {
+  this.notify.error('Analysis Fail', error);
+});
+
+localStorage.setItem('search-results', JSON.stringify(data));
+    // this.router.navigate(['/search']);
+
+}// else 
+
   }
+
+
+
+
   metaboliteEnrichment(data){
-    console.log("Metabolite enrichment is running...");
     this.http.post(`http://127.0.0.1:5000/analysis/metabolite-enrichment`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {

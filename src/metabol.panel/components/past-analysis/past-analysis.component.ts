@@ -27,6 +27,8 @@ export class PastAnalysisComponent implements OnInit {
     }
 
   ngOnInit() {
+    let isActive = localStorage.getItem('access_token') !== null;
+
     this.actRoute.params.subscribe(params => {
       let searchResults = JSON.parse(localStorage.getItem('search-results'));
       if (searchResults) {
@@ -35,9 +37,22 @@ export class PastAnalysisComponent implements OnInit {
         localStorage.removeItem('search-results');
       }
       else
-        // ['list', 'disease', 'public'].forEach(x => this.getData(x));
+
+  
+      if (!isActive){
+        console.log('im not logged in ');
+        ['public'].forEach(x => this.getData(x));
+
+      }else{
+        console.log('im logged in ');
+
         ['list', 'public'].forEach(x => this.getData(x));
-        // this.getData('public');
+      }
+
+
+
+
+
     });
   }
 
@@ -52,7 +67,6 @@ export class PastAnalysisComponent implements OnInit {
 
   getData(type: string) {
     let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/${type}`;
-    // let apiUrl = `http://127.0.0.1:5000/analysis/${type}`;
     this.http.get(apiUrl, this.login.optionByAuthorization())
 
       .subscribe((d:any) => {
@@ -60,7 +74,8 @@ export class PastAnalysisComponent implements OnInit {
         this.createForm();
       });
     // console.log(this.data);
-  }
+  
+}
 
   createForm() {
     let combined_data = [];

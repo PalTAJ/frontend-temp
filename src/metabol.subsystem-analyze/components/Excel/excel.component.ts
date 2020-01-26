@@ -191,9 +191,20 @@ private _filter(name: string): Disease2[] {
 
     const selectedMethod = this.selectedMethod;
 
-      
+    if (this.login.isLoggedIn()){
     this.usersData2['public'] = this.isPublic.value;
     this.usersData2['disease'] = this.myControl.value["id"];
+
+    }
+
+    else{
+    this.usersData2['public'] = true;
+    this.usersData2['disease'] = this.myControl.value["id"];
+    this.usersData2['email'] = this.analyzeEmail.value;
+    }
+
+
+
     if (selectedMethod === this.methods.Metabolitics) {
       this.metabolitics(this.usersData2);
     }
@@ -205,10 +216,10 @@ private _filter(name: string): Disease2[] {
 
 
   metabolitics(data) {
-    // console.log("Running...");
+
+    if (this.login.isLoggedIn()){
 
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
-    // this.http.post(`http://127.0.0.1:5000/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
         this.notify.info('Analysis Start', 'Analysis in progress');
@@ -217,16 +228,30 @@ private _filter(name: string): Disease2[] {
         error => {
           this.notify.error('Analysis Fail', error);
         });
+  } // if 
+  else{
+    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
+      data)
+      .subscribe((data: any) => {
+        this.notify.info('Analysis Start', 'Results will be sent by email.');
+        this.router.navigate(['/search']);
+      },
+        error => {
+          this.notify.error('Analysis Fail', error);
+        });
+
+  }//else 
+
+
   }
 
-  directPathwayMapping(data) {
-    // `${AppSettings.API_ENDPOINT}
-    this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
 
-    //  this.http.post(`http://127.0.0.1:5000/analysis/direct-pathway-mapping`,
+  directPathwayMapping(data) {
+
+    if (this.login.isLoggedIn()){
+      this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-          //  console.log(data);
            this.notify.info('Analysis Start', 'Analysis in progress');
            this.notify.success('Analysis Done', 'Analysis is successfully done');
            this.router.navigate(['/past-analysis', data['id']]);
@@ -235,14 +260,25 @@ private _filter(name: string): Disease2[] {
          this.notify.error('Analysis Fail', error);
       });
 
-
-
-    // data['results_pathway'] = [this.scorePathways(data['concentration_changes'])];
-    // data['results_reaction'] = [this.scoreReactions(data['concentration_changes'])];
-    // data['results_metabolite'] = [data['concentration_changes']];
     localStorage.setItem('search-results', JSON.stringify(data));
-    // localStorage.setItem('histogram', JSON.stringify(pathwayScores));
-    // this.router.navigate(['/past-analysis', 'direct-pathway-mapping']);
+    
+    } // if
+else{
+  this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping/public`,
+  data, this.login.optionByAuthorization())
+  .subscribe((data:any) => {
+    this.notify.info('Analysis Start', 'Analysis in progress');
+    this.notify.success('Analysis Done', 'Analysis Results sent to your email');
+    this.router.navigate(['/search']);
+  },
+  error => {
+  this.notify.error('Analysis Fail', error);
+});
+localStorage.setItem('search-results', JSON.stringify(data));
+
+
+}// else 
+
   }
 
 
