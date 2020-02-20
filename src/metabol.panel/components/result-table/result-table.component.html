@@ -1,4 +1,4 @@
-<!-- <ngx-datatable
+<ngx-datatable
    class="material"
    [rows]="tableData"
    [columnMode]="'flex'"
@@ -29,35 +29,35 @@
       </ng-template>
     </ngx-datatable-column>
   </ng-template>
-</ngx-datatable> -->
-<div>
-  <table class="table">
-    <tr>
-      <th>
-        Pathway Name
-      </th>
-      <th>
-        Score
-      </th>
-      <th></th>
-    </tr>
-    <tr *ngFor="let p of result[0].x;let i=index">
-        <td>
-          <a [routerLink]="['/subsystem/detail', p]">
-             {{p}}
-          </a>
-        </td>
-        <td>
-               {{result[0].y[i]}}
-        </td>
-        <td>
-            <i (click)="openPathwayDialog(p, i)"
-     class="fas fa-lg fa-microscope fa-border fa-pull-left">
-  </i>
-  <i (click)="openReactionDialog(p, i)"
-	   class="fas fa-lg fa-table fa-border fa-pull-left">
-	</i>
-        </td>
-      </tr>
-  </table>
-</div>
+</ngx-datatable>
+<!--<div>-->
+<!--  <table class="table">-->
+<!--    <tr>-->
+<!--      <th>-->
+<!--        Pathway Name-->
+<!--      </th>-->
+<!--      <th>-->
+<!--        Score-->
+<!--      </th>-->
+<!--      <th></th>-->
+<!--    </tr>-->
+<!--    <tr *ngFor="let p of result[0].x;let i=index">-->
+<!--        <td>-->
+<!--          <a [routerLink]="['/subsystem/detail', p]">-->
+<!--             {{p}}-->
+<!--          </a>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--               {{result[0].y[i]}}-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <i (click)="openPathwayDialog(p, i)"-->
+<!--     class="fas fa-lg fa-microscope fa-border fa-pull-left">-->
+<!--  </i>-->
+<!--  <i (click)="openReactionDialog(p, i)"-->
+<!--	   class="fas fa-lg fa-table fa-border fa-pull-left">-->
+<!--	</i>-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--  </table>-->
+<!--</div>-->

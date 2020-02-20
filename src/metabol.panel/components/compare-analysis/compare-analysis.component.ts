@@ -30,29 +30,29 @@ export class CompareAnalysisComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
 
-      this.options = this.login.optionByAuthorization();
-      this.options.params = new HttpParams();
-      for (let k in params) this.options.params.set(k, params[k]);
+      // this.options = this.login.optionByAuthorization();
+      // this.options.params = new HttpParams();
+      // for (let k in params) this.options.params.set(k, params[k]);
+      this.options = {  "data" : params }
       // console.log(this.options);
       this.getAnalysesData(this.options);
+
     });
   }
 
   getAnalysesData(options) {
     // console.log(options);
     let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/set`;
-    // let apiUrl = `http://127.0.0.1:5000/analysis/set`;
-    this.http.get(apiUrl, options)
+
+    this.http.post(apiUrl, options)
       .subscribe((data:any) => this.analyses = data);
-      
     // console.log(this.analyses);
   }
 
   getVisualizationData(options) {
     let apiUrl = `${AppSettings.API_ENDPOINT}/analysis/visualization`;
-    // let apiUrl = `http://127.0.0.1:5000/analysis/visualization`;
 
-    this.http.get(apiUrl, options)
+    this.http.post(apiUrl, options)
       .subscribe((data:any) => {
         data.type = 'heatmap';
         let layout = { margin: { l: 300 }, height: 1500 };
@@ -61,6 +61,7 @@ export class CompareAnalysisComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+     // console.log(this.options);
     this.getVisualizationData(this.options);
   }
 

@@ -14,16 +14,18 @@ import * as _ from 'lodash';
   styleUrls: ['./past-analysis.component.css']
 })
 export class PastAnalysisComponent implements OnInit {
-  data = { list: [], disease: [], public: [], results: [] };
+  data = { list: [], disease: [], public: [], results: [], id2: [] };
   form = new FormGroup({});
+
+  temp: any = [];
+
 
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
     private login: LoginService,
     private actRoute: ActivatedRoute,
-    private router: Router) { 
-
+    private router: Router) {
     }
 
   ngOnInit() {
@@ -31,27 +33,24 @@ export class PastAnalysisComponent implements OnInit {
 
     this.actRoute.params.subscribe(params => {
       let searchResults = JSON.parse(localStorage.getItem('search-results'));
+      // console.log(searchResults);
       if (searchResults) {
         this.data.results = searchResults;
-        this.createForm();
         localStorage.removeItem('search-results');
       }
       else
 
-  
-      if (!isActive){
+
+      if (!isActive) {
         console.log('im not logged in ');
         ['public'].forEach(x => this.getData(x));
 
-      }else{
-        console.log('im logged in ');
-
+      } else {
+       console.log('im logged in ');
         ['list', 'public'].forEach(x => this.getData(x));
+
+        // ['public'].forEach(x => this.getData(x));
       }
-
-
-
-
 
     });
   }
@@ -71,29 +70,37 @@ export class PastAnalysisComponent implements OnInit {
 
       .subscribe((d:any) => {
         this.data[type] = d;
+        // console.log(d);
+
         this.createForm();
       });
-    // console.log(this.data);
-  
+
+    // console.log(this.data[type]);
+
 }
 
   createForm() {
     let combined_data = [];
-
     for (let t in this.data)
-      combined_data = combined_data.concat(this.data[t]);
-      // console.log(combined_data);
 
-    this.form = this.fb.group(_.zipObject(combined_data.map(x => x.id),
-      _.times(combined_data.length, _.constant([false]))),
-  
-      
+      combined_data = combined_data.concat(this.data[t]);
+
+    // console.log(combined_data);
+    this.temp = combined_data[0]['id2'];
+    // console.log(this.temp);
+
+
+    this.form = this.fb.group(
+      _.zipObject(this.temp.map(x => x.id),
+      _.times(this.temp.length, _.constant([false]))),
+
       );
-      
+
   }
 
   submit() {
     let selecteds = _.toPairs(this.form.value).filter(x => x[1]).map(x => x[0]);
+    // console.log(selecteds);
     this.router.navigate(['compare-analysis', selecteds]);
   }
 

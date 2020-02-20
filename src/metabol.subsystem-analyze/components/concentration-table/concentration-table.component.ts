@@ -75,7 +75,7 @@ export class ConcentrationTableComponent implements OnInit {
     this.form = this.createForm();
     this.analyzeName = new FormControl("My Analyze", Validators.required);
     this.isPublic = new FormControl(true, Validators.required);
-    this.analyzeEmail = new FormControl("Email", Validators.required); 
+    this.analyzeEmail = new FormControl("Email", Validators.required);
     this.Disease = new FormControl("Disease/Condition", Validators.required);
     this.fetchDiseases();
     this.filteredOptions = this.myControl.valueChanges
@@ -84,7 +84,7 @@ export class ConcentrationTableComponent implements OnInit {
         map(value => typeof value === 'string' ? value : (value.name + value.synonym)),
         map(name => name ? this._filter(name) : this.diseases.slice())
       );
-    
+
   }
   fetchDiseases(){
         this.http.get(`${AppSettings.API_ENDPOINT}/diseases/all`, this.login.optionByAuthorization())
@@ -95,8 +95,17 @@ export class ConcentrationTableComponent implements OnInit {
       data.forEach(element => {
         this.diseases.push({id: element['id'], name: element['name'], synonym: element['synonym']})
       });
+
       //this.diseases.push({name: 'abc', synonym:'x'})
     });
+    // this.loader.get('diseases', (disease) => {
+    //   let data = _.values<any>(disease);
+    //   this.filteredDiseases = _.values<any>(data);
+    //   console.log(_.values<any>(data));
+    //   this.filteredDiseases.forEach(element => {
+    //     this.diseases.push({name:element['name'], synonym: element['synonym'], id: element['name']});
+    //   });
+    // });
   }
   displayFn(disease?: Disease): string | undefined {
     return disease ? disease.name : undefined;
@@ -157,7 +166,7 @@ export class ConcentrationTableComponent implements OnInit {
         "group": "not_provided",
         "disease":this.myControl.value["id"]
       };
-    }  // if 
+    }  // if
 
 
     else{
@@ -169,12 +178,12 @@ export class ConcentrationTableComponent implements OnInit {
         "disease":this.myControl.value["id"],
         "email":this.analyzeEmail.value
       };
-    } // inner else 
+    } // inner else
 
 
-    }  // else 
+    }  // else
 
-    console.log(data);
+    // console.log(data);
 
 
     if (selectedMethod === this.methods.Metabolitics) {
@@ -202,7 +211,7 @@ export class ConcentrationTableComponent implements OnInit {
         error => {
           this.notify.error('Analysis Fail', error);
         });
-  } // if 
+  } // if
   else{
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
       data)
@@ -216,7 +225,7 @@ export class ConcentrationTableComponent implements OnInit {
 
         // this.router.navigate(['/search']);
 
-  }//else 
+  }//else
 
 
   }
@@ -254,7 +263,7 @@ else{
 localStorage.setItem('search-results', JSON.stringify(data));
     // this.router.navigate(['/search']);
 
-}// else 
+}// else
 
   }
 
@@ -265,7 +274,7 @@ localStorage.setItem('search-results', JSON.stringify(data));
     this.http.post(`http://127.0.0.1:5000/analysis/metabolite-enrichment`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-           console.log(data);
+           // console.log(data);
            this.notify.info('Analysis Start', 'Analysis in progress');
            this.notify.success('Analysis Done', 'Analysis is successfully done');
            this.router.navigate(['/past-analysis', data['id']]);

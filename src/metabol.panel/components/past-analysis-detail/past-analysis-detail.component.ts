@@ -18,7 +18,7 @@ import * as _ from 'lodash';
 })
 export class PastAnalysisDetailComponent implements OnInit {
   conTable: Array<[string,number]> = [];
-  
+
 
   id;
   data;
@@ -68,13 +68,13 @@ export class PastAnalysisDetailComponent implements OnInit {
 
       for (let t in this.data2){
         this.conTable.push([t,this.data2[t]]);
-        
-        
+
+
       }
-      console.log(this.conTable);
+      //console.log(this.conTable);
 
 
-        // this.conTable = data['fold_changes'] as JSON ; 
+        // this.conTable = data['fold_changes'] as JSON ;
         // console.log(this.conTable);
 
         // this.
@@ -94,7 +94,7 @@ export class PastAnalysisDetailComponent implements OnInit {
       // for (let t in this.data['fold_changes']){
       //   console.log(t);
       // }
-      
+
       if (localStorage.getItem('reload') == 'True'){
         localStorage.removeItem('reload');
         location.reload();
@@ -136,11 +136,11 @@ export class PastAnalysisDetailComponent implements OnInit {
     // console.log(this.selectedObj);
     localStorage.setItem('reload', 'True');
     this.router.navigate(['/past-analysis', this.selectedObj]);
-    
+
   }
 
 
 
 
-  
+
 }

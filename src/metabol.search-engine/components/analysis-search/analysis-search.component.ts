@@ -165,7 +165,7 @@ export class AnalysisSearchComponent implements OnInit {
     // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
-        console.log(data);
+        //console.log(data);
         localStorage.setItem('search-results', JSON.stringify(data));
         this.router.navigate(['past-analysis']);
       });
@@ -173,7 +173,7 @@ export class AnalysisSearchComponent implements OnInit {
 
   // filterMetabols(val: string): string[] {
   //   console.log(this.filteredMetabols);
-    
+
   //   return this.metabols.filter(option => new RegExp(`^${val}`, 'gi').test(option));
   // }
 

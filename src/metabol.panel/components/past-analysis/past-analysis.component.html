@@ -2,13 +2,15 @@
 <section id="past-analysis" class="container">
 		<div class="row">
 		  <div class="col-mat-12">
-			<button type="button" class="btn btn-default" (click)="submit()">
+
+
+        <button type="button" class="btn btn-default" (click)="submit()">
 		  Compare
 			</button>
-			<form [formGroup]="form">
-				  
+        <form [formGroup]="form">
+
 		  <mat-tab-group>
-			<ng-template ngFor let-type [ngForOf]="data | keys"> 
+			<ng-template ngFor let-type [ngForOf]="data | keys">
 			  <mat-tab *ngIf="data[type].length != 0" [label]="(type == 'list' ? 'private' : type) | titlecase">
 				<div class="panel panel-default">
 				  <mat-accordion>
@@ -21,25 +23,28 @@
 						  </mat-panel-title>
 						  <mat-panel-description>
 								  {{i.method}}
-						  </mat-panel-description> 	
+						  </mat-panel-description>
 						  </mat-expansion-panel-header>
-						  
+
 						  <li class="list-group-item" *ngFor="let j of i.analyses | orderBy:'name'">
 								  <div class="col-md-1 col-xs-1 col-lg-1"></div>
-								  <input type="checkbox" [formControlName]="i.id" />
+								  <input type="checkbox" [formControlName]="j.id" />
+<!--                <input type="checkbox" [formControl]="j.id" />{{j.id}}-->
+
 
 								  <a [routerLink]="['/past-analysis', j.id]"> {{j.name}}
 								  </a>
 						  </li>
-					  </mat-expansion-panel>
+
+
+            </mat-expansion-panel>
 				  </mat-accordion>
 				 </div>
 			  </mat-tab>
 			</ng-template>
 		  </mat-tab-group>
-			</form>
-			
+        </form>
+
 		  </div>
 		</div>
 	  </section>
-	  
