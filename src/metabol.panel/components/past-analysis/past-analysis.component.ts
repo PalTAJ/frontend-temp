@@ -14,7 +14,7 @@ import * as _ from 'lodash';
   styleUrls: ['./past-analysis.component.css']
 })
 export class PastAnalysisComponent implements OnInit {
-  data = { list: [], disease: [], public: [], results: [], id2: [] };
+  data = { list: [], disease: [], public: [], results: []};
   form = new FormGroup({});
 
   temp: any = [];
@@ -42,11 +42,11 @@ export class PastAnalysisComponent implements OnInit {
 
 
       if (!isActive) {
-        console.log('im not logged in ');
+        // console.log('im not logged in ');
         ['public'].forEach(x => this.getData(x));
 
       } else {
-       console.log('im logged in ');
+       // console.log('im logged in ');
         ['list', 'public'].forEach(x => this.getData(x));
 
         // ['public'].forEach(x => this.getData(x));
