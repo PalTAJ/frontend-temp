@@ -7,5 +7,6 @@ export { CompareAnalysisComponent } from './compare-analysis'
 export { DialogPathwayVisualizationComponent } from './dialog-pathway-visualization';
 export { DialogReactionResultsComponent } from './dialog-reaction-results';
 export { ResultTableComponent } from './result-table';
-export { SimilarDiseasesComponent } from './similar-diseases'
-export { AnalysisListComponent } from './analysis-list'
+export { SimilarDiseasesComponent } from './similar-diseases';
+export { AnalysisListComponent } from './analysis-list';
+export { SearchAnalysisResultComponent } from './search-analysis-result';

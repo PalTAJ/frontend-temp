@@ -14,6 +14,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MatTabsModule} from '@angular/material';
 import {MatExpansionModule} from '@angular/material/expansion';
 
+import {MatListModule} from '@angular/material/list';
 
 import {
   PanelComponent,
@@ -27,6 +28,8 @@ import {
   ResultTableComponent,
   SimilarDiseasesComponent,
   AnalysisListComponent,
+  SearchAnalysisResultComponent,
+
 } from "./components";
 
 import { LoginService } from '../metabol.auth/services/login/login.service';
@@ -46,9 +49,11 @@ import { from } from 'rxjs';
     ResultTableComponent,
     SimilarDiseasesComponent,
     AnalysisListComponent,
+    SearchAnalysisResultComponent,
   ],
   // schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   imports: [
+    MatListModule,
     MatExpansionModule,
     BrowserModule,
     ReactiveFormsModule,

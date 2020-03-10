@@ -86,6 +86,7 @@ export class PastAnalysisComponent implements OnInit {
       combined_data = combined_data.concat(this.data[t]);
 
     // console.log(combined_data);
+
     this.temp = combined_data[0]['id2'];
     // console.log(this.temp);
 

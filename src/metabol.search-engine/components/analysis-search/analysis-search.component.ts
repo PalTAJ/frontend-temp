@@ -136,7 +136,7 @@ export class AnalysisSearchComponent implements OnInit {
 
     this.form2 = this.fb.group({
       metabol: ["", Validators.required],
-      changeM: ["", Validators.required],
+      // changeM: ["", Validators.required],
     });
 
 
@@ -165,7 +165,7 @@ export class AnalysisSearchComponent implements OnInit {
     // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
-        //console.log(data);
+        console.log(data);
         localStorage.setItem('search-results', JSON.stringify(data));
         this.router.navigate(['past-analysis']);
       });
@@ -186,18 +186,20 @@ export class AnalysisSearchComponent implements OnInit {
   //   // this.form2.reset();
   // }
 
-  // searchMetabol() {
-  //   let data2 = {"metabol":this.metabol,'change':this.changeM}
-  //   // console.log(data2);
+  searchMetabol() {
+    let data2 = { "metabol" : this.form2.value.metabol};
+    // console.log(data2);
 
-  //   // this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
-  //   // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-metabol`,data2)
+    this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-metabol`, data2)
+      .subscribe((data:any) => {
+        // console.log(data);
 
-  //     .subscribe((data:any) => {
-  //       // console.log(data);
+        // localStorage.setItem('search-results', JSON.stringify(data));
+        localStorage.setItem('search-metabol', JSON.stringify(data2));
 
-  //       localStorage.setItem('search-results', JSON.stringify(data));
-  //       // this.router.navigate(['past-analysis']);
-  //     });
-  // }
+        localStorage.setItem('search-results', JSON.stringify(data));
+
+        this.router.navigate(['search-analysis-result']);
+      });
+  }
 }

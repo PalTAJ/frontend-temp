@@ -7,7 +7,8 @@ import {
   PastAnalysisComponent,
   ChangePasswordComponent,
   PastAnalysisDetailComponent,
-  CompareAnalysisComponent
+  CompareAnalysisComponent,
+  SearchAnalysisResultComponent
 } from "./components";
 
 
@@ -17,7 +18,8 @@ export const MetabolPanelRoutes: Routes = [
   { path: 'past-analysis', component: PastAnalysisComponent },
   { path: 'search-past-analysis/:query', component: PastAnalysisComponent },
   { path: 'past-analysis/:key', component: PastAnalysisDetailComponent },
-  { path: 'compare-analysis', component: CompareAnalysisComponent }
+  { path: 'compare-analysis', component: CompareAnalysisComponent },
+  {path: 'search-analysis-result', component: SearchAnalysisResultComponent}
 ];
 
 

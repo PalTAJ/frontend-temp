@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { SimpleNotificationsModule } from 'angular2-notifications'
+import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NgPipesModule } from 'ngx-pipes';
 import { MatRippleModule } from '@angular/material';
+import {MatListModule} from '@angular/material/list';
 
 // import {MaterialModule} from '@angular/material/material.module';
 import { routing, appRoutingProviders } from './app.routes';
@@ -50,6 +51,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
   ,
   imports: [
     // MaterialModule,
+    MatListModule,
     NoopAnimationsModule,
     MatTabsModule,
     MatSlideToggleModule,
