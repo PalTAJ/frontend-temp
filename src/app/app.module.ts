@@ -36,8 +36,7 @@ import { MatInputModule} from '@angular/material/input';
 import { HttpModule } from '@angular/http';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
-
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -71,6 +70,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
     HttpModule,
     MatExpansionModule,
     MatTableModule,
+    ReactiveFormsModule,
 
     MetabolCommonModule,
     DocumentationModule,

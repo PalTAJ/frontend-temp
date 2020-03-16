@@ -1,76 +1,4 @@
-// import { Component, OnInit, Input } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { HttpClient } from '@angular/common/http';
-// import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import {MatAutocompleteModule} from '@angular/material/autocomplete';
-// import * as _ from 'lodash';
-// import { NotificationsService } from 'angular2-notifications';
-//
-// import { AppDataLoader } from '../../../metabol.common/services';
-// import { AppSettings } from '../../../app/';
-// import { map } from "rxjs/operators";
-//
-// @Component({
-//   selector: 'analysis-search',
-//   templateUrl: './analysis-search.component.html',
-//   styleUrls: ['./analysis-search.component.css']
-// })
-// export class AnalysisSearchComponent implements OnInit {
-//
-//   form: FormGroup;
-//
-//   pathways;
-//   filteredPathways;
-//
-//   pathwayChanges = [];
-//
-//   constructor(
-//     private fb: FormBuilder,
-//     private http: HttpClient,
-//     private router: Router,
-//     private loader: AppDataLoader) { }
-//
-//   ngOnInit() {
-//
-//     this.loader.get('recon2', (recon) => {
-//       this.pathways = Object.keys(recon.pathways).sort();
-//     });
-//
-//     this.form = this.fb.group({
-//       pathway: ["", Validators.required],
-//       change: ["", Validators.required],
-//       qualifier: [],
-//       amount: []
-//     });
-//
-//     this.filteredPathways = this.form.controls.pathway.valueChanges
-//       //.startWith(null)
-//       .pipe(map(val => val ? this.filter(val).sort() : this.pathways.slice()));
-//   }
-//
-//   filter(val: string): string[] {
-//     return this.pathways.filter(option => new RegExp(`^${val}`, 'gi').test(option));
-//   }
-//
-//   remove(index) {
-//     this.pathwayChanges.splice(index, 1);
-//   }
-//
-//   add(value) {
-//     this.pathwayChanges.push(value);
-//     this.form.reset();
-//   }
-//
-//   search() {
-//     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
-//       .subscribe((data:any) => {
-//         localStorage.setItem('search-results', JSON.stringify(data));
-//         this.router.navigate(['past-analysis']);
-//       });
-//   }
-//
-// }
-// ##############################
+
 
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
@@ -81,19 +9,36 @@ import * as _ from 'lodash';
 import { NotificationsService } from 'angular2-notifications';
 import { AppDataLoader } from '../../../metabol.common/services';
 import { AppSettings } from '../../../app/';
-import { map } from "rxjs/operators";
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { from, Subscription, BehaviorSubject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule, MatFormFieldModule } from '@angular/material';
+
 
 @Component({
   selector: 'analysis-search',
   templateUrl: './analysis-search.component.html',
   styleUrls: ['./analysis-search.component.css']
 })
+
+
+
 export class AnalysisSearchComponent implements OnInit {
+
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+
+
 
   form: FormGroup;
   form2: FormGroup;
 
-  metabol = FormControl ;
+  // metabol = FormControl ;
   changeM = FormControl;
   qualifierM = 'none';
   amount2 = ' Diff Amount';
@@ -107,6 +52,8 @@ export class AnalysisSearchComponent implements OnInit {
   pathwayChanges = [];
   metabolChanges = [];
 
+
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -115,16 +62,26 @@ export class AnalysisSearchComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.metabol = new FormControl("Metabol", Validators.required)
     this.loader.get('recon2', (recon) => {
       this.metabols = Object.keys(recon.metabolites).sort();
+      this.pathways = Object.keys(recon.pathways).sort();
+
 
     });
-    this.loader.get('recon2', (recon) => {
-      this.pathways = Object.keys(recon.pathways).sort();
+
+    this.form2 = this.fb.group({
+      metabol: ["", Validators.required],
     });
-    // console.log(this.pathways);
-    // console.log(this.metabols);
+
+
+    this.filteredMetabols = this.form2.controls.metabol.valueChanges
+      .pipe(map(val => val ? this.filter2(val).sort() : this.metabols.slice()));
+
+
+
+
+
+
     this.form = this.fb.group({
       pathway: ["", Validators.required],
       change: ["", Validators.required],
@@ -133,18 +90,10 @@ export class AnalysisSearchComponent implements OnInit {
       amount: []
     });
 
-
-    this.form2 = this.fb.group({
-      metabol: ["", Validators.required],
-      // changeM: ["", Validators.required],
-    });
-
-
     this.filteredPathways = this.form.controls.pathway.valueChanges
-    //.startWith(null)
       .pipe(map(val => val ? this.filter(val).sort() : this.pathways.slice()));
-    // this.filteredMetabols = this.form2.controls.metabol.valueChanges
-      // .pipe(map(val => val ? this.filterMetabols(val).sort() : this.metabols.slice()));
+
+
   }
 
   filter(val: string): string[] {
@@ -162,7 +111,6 @@ export class AnalysisSearchComponent implements OnInit {
 
   search() {
     this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
-    // this.httpClient.post(`http://127.0.0.1:5000/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
         console.log(data);
@@ -171,23 +119,26 @@ export class AnalysisSearchComponent implements OnInit {
       });
   }
 
-  // filterMetabols(val: string): string[] {
-  //   console.log(this.filteredMetabols);
 
-  //   return this.metabols.filter(option => new RegExp(`^${val}`, 'gi').test(option));
-  // }
 
-  // removeMetabol(index) {
-  //   this.metabolChanges.splice(index, 1);
-  // }
+///////////////////////////////////////////
 
-  // addMetabol(value) {
-  //   this.metabolChanges.push(value);
-  //   // this.form2.reset();
-  // }
+  filter2(val: string): string[] {
+    return this.metabols.filter(option => new RegExp(`^${val}`, 'gi').test(option));
+  }
+
+  remove2(index) {
+    this.metabolChanges.splice(index, 1);
+  }
+
+  add2(value) {
+    this.metabolChanges.push(value);
+    this.form2.reset();
+  }
+
 
   searchMetabol() {
-    let data2 = { "metabol" : this.form2.value.metabol};
+    let data2 = { 'metabol' : this.form2.value.metabol};
     // console.log(data2);
 
     this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-metabol`, data2)

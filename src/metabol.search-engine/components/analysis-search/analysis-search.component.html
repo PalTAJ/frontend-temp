@@ -4,28 +4,36 @@
 
  <section id="search-analysisM" fxLayout="row" fxLayoutAlign="center start">
   <mat-card fxFlex.gt-sm="900px">
+
+
+
     <mat-card-header>
       <mat-card-title>
         <h3>Search Analysis Metabolites </h3>
       </mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
-      <form [formGroup]="form2" (ngSubmit)="add(form2.value)">
+      <form [formGroup]="form2" (ngSubmit)="add2(form2.value)">
         <mat-form-field>
-          <input matInput placeholder="Choose Metabol" [matAutocomplete]="auto" formControlName="metabol">
+          <input matInput placeholder="Choose Metabolite" [matAutocomplete]="auto2" formControlName="metabol">
         </mat-form-field>
+        <mat-autocomplete #auto2="matAutocomplete">
+          <mat-option *ngFor="let m of filteredMetabols | async" [value]="m">
+            {{ m }}
+          </mat-option>
+        </mat-autocomplete>
 
-<!--        <mat-select placeholder="Choose Change" formControlName="changeM">-->
-<!--          <mat-option value="1">Increase</mat-option>-->
-<!--          <mat-option value="-1">Decrease</mat-option>-->
-<!--        </mat-select>-->
 
-      </form>
+</form>
 
       <button mat-raised-button  color="accent" (click)="searchMetabol()">Search</button>
+
     </mat-card-content>
-  </mat-card>
-</section>
+
+
+<!--  </mat-card>-->
+<!--</section>-->
 
 
 
@@ -36,11 +44,20 @@
 
 
 
-<!--##################-->
 
 
-<section id="search-analysis" fxLayout="row" fxLayoutAlign="center start">
-  <mat-card fxFlex.gt-sm="900px">
+
+
+
+
+ <!--##################-->
+
+
+<!--<section id="search-analysis" fxLayout="row" fxLayoutAlign="center start">-->
+<!--  <mat-card fxFlex.gt-sm="900px">-->
+
+
+
     <mat-card-header>
       <mat-card-title>
 	<h3>Search Analysis Results</h3>
