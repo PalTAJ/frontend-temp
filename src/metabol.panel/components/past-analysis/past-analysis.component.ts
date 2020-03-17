@@ -29,6 +29,8 @@ export class PastAnalysisComponent implements OnInit {
     }
 
   ngOnInit() {
+
+
     let isActive = localStorage.getItem('access_token') !== null;
 
     this.actRoute.params.subscribe(params => {

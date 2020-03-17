@@ -78,10 +78,6 @@ export class AnalysisSearchComponent implements OnInit {
       .pipe(map(val => val ? this.filter2(val).sort() : this.metabols.slice()));
 
 
-
-
-
-
     this.form = this.fb.group({
       pathway: ["", Validators.required],
       change: ["", Validators.required],
@@ -113,9 +109,15 @@ export class AnalysisSearchComponent implements OnInit {
     this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-change`, this.pathwayChanges)
 
       .subscribe((data:any) => {
+
+        let data3 = { 'pathway' : this.form.value.pathway};
         console.log(data);
         localStorage.setItem('search-results', JSON.stringify(data));
-        this.router.navigate(['past-analysis']);
+        // localStorage.setItem('search-metabol', JSON.stringify(data3));
+
+        //
+        this.router.navigate(['search-analysis-result']);
+
       });
   }
 
@@ -143,13 +145,11 @@ export class AnalysisSearchComponent implements OnInit {
 
     this.httpClient.post(`${AppSettings.API_ENDPOINT}/analysis/search-by-metabol`, data2)
       .subscribe((data:any) => {
-        // console.log(data);
+        console.log(data);
 
-        // localStorage.setItem('search-results', JSON.stringify(data));
-        localStorage.setItem('search-metabol', JSON.stringify(data2));
-
+        // localStorage.setItem('search-metabol', JSON.stringify(data2));
         localStorage.setItem('search-results', JSON.stringify(data));
-
+        //
         this.router.navigate(['search-analysis-result']);
       });
   }

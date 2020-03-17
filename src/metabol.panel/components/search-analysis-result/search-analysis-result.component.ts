@@ -42,19 +42,16 @@ export class SearchAnalysisResultComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     const data  = localStorage.getItem('search-results');
-    const data2  = localStorage.getItem('search-metabol');
+    // const data2  = localStorage.getItem('search-metabol');
     this.searchResults = JSON.parse(data);
-    this.metabol = JSON.parse(data2);
+    // this.metabol = JSON.parse(data2);
 
 
-    console.log(this.searchResults);
-    // for (let i of this.searchResults) {
-    //   console.log(i);
-    // }
+    // console.log(this.searchResults);
+
     if (this.searchResults && this.metabol) {
-      // this.data.results = searchResults;
       localStorage.removeItem('search-results');
-      localStorage.removeItem('search-metabol');
+      // localStorage.removeItem('search-metabol');
 
     }
 
