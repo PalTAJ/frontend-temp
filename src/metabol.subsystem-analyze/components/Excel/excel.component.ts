@@ -52,6 +52,7 @@ export class ExcelComponent implements OnInit {
   data;
   data2;
   data3;
+  isMapped;
   test: JSON;
   query: string;
   filteredDiseases=[];
@@ -120,16 +121,19 @@ export class ExcelComponent implements OnInit {
     // this.selected = "option2";
     this.usersData = JSON.parse(localStorage.getItem('metabolitics-data'));
     this.usersData2 = this.usersData;
+    this.isMapped = this.usersData2['isMapped']
+    console.log(this.isMapped);
+
     for(let name in this.usersData2['analysis']){
       this.cases.push(name);
       this.labels.push(this.usersData2['analysis'][name]['Label']);
       // this.metaboliteValues.push(Object.entries(this.usersData2['analysis'][name]['Metabolites']));
     }
     for(let key in this.usersData2['analysis'][this.cases[0]]["Metabolites"]) {
-    this.metaboliteNames.push(key); 
+    this.metaboliteNames.push(key);
   }
 
-  
+
   for (var _i = 0; _i < this.metaboliteNames.length; _i++) {
     let temp_list = new Array();
     let temp_metabol_name;
@@ -155,7 +159,7 @@ export class ExcelComponent implements OnInit {
     onSubmit() {
       // console.log("Analyse under Construction")
 
-  
+
 
 }
 
@@ -194,6 +198,7 @@ private _filter(name: string): Disease2[] {
     if (this.login.isLoggedIn()){
     this.usersData2['public'] = this.isPublic.value;
     this.usersData2['disease'] = this.myControl.value["id"];
+    this.usersData2['isMapped'] = this.isMapped;
 
     }
 
@@ -201,6 +206,10 @@ private _filter(name: string): Disease2[] {
     this.usersData2['public'] = true;
     this.usersData2['disease'] = this.myControl.value["id"];
     this.usersData2['email'] = this.analyzeEmail.value;
+    this.usersData2['isMapped'] = this.isMapped;
+    console.log(this.usersData2);
+
+
     }
 
 
@@ -228,7 +237,7 @@ private _filter(name: string): Disease2[] {
         error => {
           this.notify.error('Analysis Fail', error);
         });
-  } // if 
+  } // if
   else{
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
       data)
@@ -240,7 +249,7 @@ private _filter(name: string): Disease2[] {
           this.notify.error('Analysis Fail', error);
         });
 
-  }//else 
+  }//else
 
 
   }
@@ -261,7 +270,7 @@ private _filter(name: string): Disease2[] {
       });
 
     localStorage.setItem('search-results', JSON.stringify(data));
-    
+
     } // if
 else{
   this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping/public`,
@@ -277,7 +286,7 @@ else{
 localStorage.setItem('search-results', JSON.stringify(data));
 
 
-}// else 
+}// else
 
   }
 
