@@ -19,6 +19,7 @@ import { VisualizationModule } from "../metabol.visualization";
 import { MetabolAuthModule } from "../metabol.auth";
 import { SubsystemAnalyzeModule } from "../metabol.subsystem-analyze";
 import { MetabolPanelModule } from '../metabol.panel';
+import {DemoModule} from "../demo";
 // import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { MatButtonModule} from '@angular/material';
@@ -74,6 +75,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
     MetabolCommonModule,
     DocumentationModule,
+    DemoModule,
     MetabolAuthModule,
     SearchEngineModule,
     SubsystemAnalyzeModule,

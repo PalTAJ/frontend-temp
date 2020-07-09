@@ -42,6 +42,12 @@
       <button mat-button [matMenuTriggerFor]="accountMenu" *ngIf="loginService.isLoggedIn()">
 	Account
       </button>
+
+
+      <button mat-button [routerLink]="['demo']">
+        How does MetaboliticsDB work?
+      </button>
+
     </div>
   </div>
 </nav>
