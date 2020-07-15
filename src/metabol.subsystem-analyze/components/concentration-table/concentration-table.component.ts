@@ -16,6 +16,7 @@ import {startWith} from 'rxjs/operators';
 import { HttpModule } from '@angular/http';
 import {validate} from 'codelyzer/walkerFactory/walkerFn';
 import { map } from 'rxjs/operators';
+import synonyms from '../../../assets/datasets/synonyms_latest.json';
 
 export interface Disease {
   id: number;
@@ -30,11 +31,12 @@ export interface Disease {
   providers: [SubsystemAnalyzeService],
 })
 export class ConcentrationTableComponent implements OnInit {
-  @Input() conTable: Array<[string, number]> = [];
+  @Input() conTable: Array<[string, number, string, string, boolean]> = [];
   myControl = new FormControl();
-
-
-  diseases: Disease[]= [];
+  analysisTable: Array<[string, number]> = [];
+  previewTable: Array<[string, string, number]> = [];
+  public synonymList: [] = synonyms;
+  diseases: Disease[] = [];
   filteredOptions: Observable<Disease[]>;
 
   data;
@@ -43,7 +45,8 @@ export class ConcentrationTableComponent implements OnInit {
   test: JSON;
   query: string;
   filteredDiseases=[];
-
+  isMapped = true;
+  synonymAdditions: Array<[string, number]> = [];
   form: FormGroup;
   analyzeName: FormControl;
   isPublic: FormControl;
@@ -129,20 +132,40 @@ export class ConcentrationTableComponent implements OnInit {
   onSubmit(value) {
     // this.conTable.push([value['name'], parseInt(value['value'])]);
     // this.form = this.createForm();
-    let file = this.selected;
-    this.subSerivce.getJSON(file).subscribe(data => {
-      this.data2 = data[value['name']];
-
-      if (this.data2 === null || this.data2 === undefined || this.data2 === "" || this.data2.lenght === 0) {
-        this.notify.error('Adding metabolite Failed', 'Check if you chosen the right DB ');
-
+    this.loader.get('recon2', (recon) => {
+      if (recon.metabolites[value['name']]) {
+        // tslint:disable-next-line:max-line-length
+        this.conTable.push([value['name'], value['value'], recon.metabolites[value['name']].id, recon.metabolites[value['name']].name, true]);
+        this.notify.success('Metabolite successfully added with matching', 'Success');
       } else {
-        this.conTable.push([data[value['name']], value['value']]);
-        this.form = this.createForm();
-        this.notify.info('Metabolite Added', ' Sucess');
+        if (this.synonymList[value['name']]) {
+          let name = this.prioritizeMetabolites(this.synonymList[value['name']]);
+          if (recon.metabolites[name]){
+            this.conTable.push([value['name'], value['value'], name, recon.metabolites[name].name, true]);
+          } else {
+            this.conTable.push([value['name'], value['value'], name, name, true]);
+          }
+          this.notify.success('Metabolite successfully added with matching', 'Success');
+        } else {
+          this.conTable.push([value['name'], value['value'], '-', '-', false]);
+          this.notify.info("Metabolite successfully added but it has no matching", 'Info');
+        }
       }
-
     });
+    // let file = this.selected;
+    // this.subSerivce.getJSON(file).subscribe(data => {
+    //   this.data2 = data[value['name']];
+
+    //   if (this.data2 === null || this.data2 === undefined || this.data2 === "" || this.data2.lenght === 0) {
+    //     this.notify.error('Adding metabolite Failed', 'Check if you chosen the right DB ');
+
+    //   } else {
+    //     this.conTable.push([data[value['name']], value['value']]);
+    //     this.form = this.createForm();
+    //     this.notify.info('Metabolite Added', ' Sucess');
+    //   }
+
+    // });
   }
 
   analyze() {
@@ -196,7 +219,35 @@ export class ConcentrationTableComponent implements OnInit {
       this.metaboliteEnrichment(data);
     }
   }
-
+  prioritizeMetabolites(metaboliteList) {
+    let is_c_found = false;
+    let is_m_found = false;
+    let recon_name = "";
+    metaboliteList.forEach(metabolite => {
+      if (/_c/.test(metabolite) && !is_c_found) {
+        recon_name = metabolite;
+        is_c_found = true;
+      }
+    });
+    if (!is_c_found) {
+      metaboliteList.forEach(metabolite => {
+        if (/_m/.test(metabolite) && !is_m_found) {
+          recon_name = metabolite;
+          is_m_found = true;
+        }
+      });
+    }
+    if (!is_c_found && !is_m_found) {
+      const randomNumber = this.getRandomInt(0, metaboliteList.length - 1);
+      recon_name = metaboliteList[randomNumber];
+    }
+    return recon_name;
+  }
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 
   metabolitics(data) {
 

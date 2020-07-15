@@ -137,8 +137,9 @@ export class ResultTableComponent implements OnInit, OnChanges {
     let dialogRef = this.dialog.open(DialogPathwayVisualizationComponent, {
       width: '1000px',
     });
+    let flux_dictionary = { 'reaction_data': this.data[0].results_reaction[0], 'fold_changes': this.data[0].fold_changes}
     dialogRef.componentInstance.pathway = pathway;
-    dialogRef.componentInstance.fluxes = this.data[index].results_reaction[0];
+    dialogRef.componentInstance.fluxes = flux_dictionary;
   }
 
   scoreComparator(s1, s2) {

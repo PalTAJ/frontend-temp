@@ -1,3 +1,4 @@
+import { AppDataLoader } from './../../../metabol.common/services/data-loader/data-loader.service';
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ConcentrationTableComponent} from '../concentration-table/concentration-table.component';
@@ -17,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 // import { HttpModule } from '@angular/http';
 
 import { AppSettings } from '../../../app/';
-
+import synonyms from '../../../assets/datasets/synonyms_latest.json';
 
 
 @Component({
@@ -27,10 +28,11 @@ import { AppSettings } from '../../../app/';
   providers: [SubsystemAnalyzeService,SimpleNotificationsModule]
 })
 export class UploadComponent {
-  conTable: Array<[string, number]> = [];
+  conTable: Array<[string, number, string, string, boolean]> = [];
   file: any;
 
-
+  analysisTable: Array<[string, number, string, string]> = [];
+  public synonymList: [] = synonyms;
   selected = 'Combined.json';
   temp:JSON;
   temp2;
@@ -44,52 +46,49 @@ export class UploadComponent {
 
 
   constructor(fb: FormBuilder,
-  private subSerivce: SubsystemAnalyzeService,
-  private router: Router,
-  private login: LoginService,
-  private notify: SimpleNotificationsModule,
-  private httpClient: HttpClient
-) { }
+    private subSerivce: SubsystemAnalyzeService,
+    private router: Router,
+    private login: LoginService,
+    private notify: SimpleNotificationsModule,
+    private httpClient: HttpClient,
+    private loader: AppDataLoader
+  ) { }
 
   jsonChange($event) {
     this.readJson($event.target);
   }
 
   readJson(inputValue: any) {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
 
-    let file2 = this.selected;
-    myReader.onload = (e: any) =>{
+    const file2 = this.selected;
+    myReader.readAsText(file);
+    myReader.onload = (e: any) => {
     // this.temp = JSON.parse(JSON.stringify(e.target.result));
     this.temp = JSON.parse(e.target.result);
     // console.log(this.temp);
-    for (let t in this.temp){
-      // console.log(t);
-      // console.log(this.temp[t]);
-
-      this.subSerivce.getJSON(file2).subscribe(data => {
-        if (data[t] === null || data[t] === undefined || data[t] === "" || data[t].lenght === 0) {
-          // if this condition apply mostly it means we dont need to map the metabolic to other database,
-          // and its the correct name so we keep it
-         t = t;
-        } else { // if mapping is needed(in other way if mapping name exist in our combined database )
-          this.ooldM = t;
-          t = data[t] + " \t(" + this.ooldM + ")";
-          // console.log(t);
+    this.loader.get('recon2', (recon) => {
+      for (let t in this.temp) {
+        if (recon.metabolites[t]) {
+          this.conTable.push([t, this.temp[t], recon.metabolites[t].id, recon.metabolites[t].name, true]);
+        } else {
+          if (this.synonymList[t]) {
+            const name = this.prioritizeMetabolites(this.synonymList[t]);
+            if (recon.metabolites[name]) {
+              this.conTable.push([t, this.temp[t], name, recon.metabolites[name].name, true]);
+            } else {
+              this.conTable.push([t, this.temp[t], name, name, true]);
+            }
+          } else {
+            this.conTable.push([t, this.temp[t], '-', '-', false]);
+          }
         }
-        this.conTable.push([t,this.temp[t]]);
-
-
-
-      }); 
+      }
+      });
     }
-      
-    
+    console.log(this.conTable);
 
-      // this.conTable = <Array<[string, number]>>_.toPairs(JSON.parse(e.target.result));
-    }
-    myReader.readAsText(file);
   }
 
   csvChange($event) {
@@ -97,41 +96,36 @@ export class UploadComponent {
   }
 
   readCsv(inputValue: any) {
-    // var file: File = inputValue.files[0];
-    // var myReader: FileReader = new FileReader();
-    // myReader.onload = (e: any) => {
-    //   let lines = e.target.result.split("\n");
-    //   for (let i of lines) {
-    //     let c = i.split(',');
-    //     this.conTable.push(c);
-    //   }
-    // }
-    // myReader.readAsText(file);
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
-    myReader.onload = (e: any) => {
-      let lines = e.target.result.split("\n");
-      for (let i of lines) {
-        let c = i.split(',');
-        let file2 = this.selected;
-        this.subSerivce.getJSON(file2).subscribe(data => {  // opens combined.json to get te metabolic name if needed
-          //data contains the data from combined.json
-          if (data[c[0]] === null || data[c[0]] === undefined || data[c[0]] === "" || data[c[0]].lenght === 0) {
-            // if this condition apply mostly it means we dont need to map the metabolic to other database,
-            // and its the correct name so we keep it
-            c[0] = c[0];
-          } else { // if mapping is needed(in other way if mapping name exist in our combined database )
-            this.ooldM = c[0];
-            c[0] = data[c[0]] + " \t(" + this.ooldM + ")";
-            // console.log(c);
-          }
-        });
-        this.conTable.push(c);
-      }
-    }
+    const file: File = inputValue.files[0];
+    const myReader: FileReader = new FileReader();
     myReader.readAsText(file);
+    myReader.onload = (e: any) => {
+      const lines = e.target.result.split("\n");
+      this.loader.get('recon2', (recon) => {
+        for (let line of lines){
+          const splitted = line.split(',');
+          const originalName = splitted[0];
+          if (originalName !== '' && originalName !== null) {
+            const value = splitted[1];
+            if (recon.metabolites[originalName]) {
+              this.conTable.push([originalName, value, recon.metabolites[originalName].id, recon.metabolites[originalName].name, true]);
+            } else {
+              if (this.synonymList[originalName]) {
+                const reconName = this.prioritizeMetabolites(this.synonymList[originalName]);
+                if (recon.metabolites[reconName]) {
+                  this.conTable.push([originalName, value, reconName, recon.metabolites[reconName].name, true]);
+                } else {
+                  this.conTable.push([originalName, value, reconName, reconName, true]);
+                }
 
-
+              } else {
+                this.conTable.push([originalName, value, '-', '-', false]);
+              }
+            }
+          }
+        }
+        });
+    }
   }
 
   ///////////////////////////////// Workbench
@@ -213,5 +207,33 @@ export class UploadComponent {
     };
     reader.readAsBinaryString(this.file5);
   }
-
+  prioritizeMetabolites(metaboliteList) {
+    let is_c_found = false;
+    let is_m_found = false;
+    let recon_name = "";
+    metaboliteList.forEach(metabolite => {
+      if (/_c/.test(metabolite) && !is_c_found) {
+        recon_name = metabolite;
+        is_c_found = true;
+      }
+    });
+    if (!is_c_found) {
+      metaboliteList.forEach(metabolite => {
+        if (/_m/.test(metabolite) && !is_m_found) {
+          recon_name = metabolite;
+          is_m_found = true;
+        }
+      });
+    }
+    if (!is_c_found && !is_m_found) {
+      const randomNumber = this.getRandomInt(0, metaboliteList.length - 1);
+      recon_name = metaboliteList[randomNumber];
+    }
+    return recon_name;
+  }
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
 }

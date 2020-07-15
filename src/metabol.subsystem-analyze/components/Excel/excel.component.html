@@ -105,8 +105,9 @@
     <tbody>
         <tr *ngFor="let r of usersData3;let i=index">
           <!-- <td> </td> -->
-          <td *ngFor="let met of r">
-        {{met}}
+          <td *ngFor="let met of r[0]">
+         <span *ngIf="!r[1]" style="background-color: yellow;"> {{met}}</span>
+         <span *ngIf="r[1]"> {{met}}</span>
         </td>
         </tr>
         </tbody>

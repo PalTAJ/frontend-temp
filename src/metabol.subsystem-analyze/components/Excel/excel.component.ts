@@ -142,11 +142,11 @@ export class ExcelComponent implements OnInit {
       temp_list.push(this.usersData2['analysis'][this.cases[_j]]["Metabolites"][this.metaboliteNames[_i]]);
     }
     temp_list.unshift(temp_metabol_name);
-    this.usersData3.push(temp_list);
+    this.usersData3.push([temp_list,this.isMapped[temp_metabol_name]['isMapped']]);
 
 }
 
-// console.log(this.usersData3);
+ console.log(this.usersData3);
 
 
 
