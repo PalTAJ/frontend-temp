@@ -146,7 +146,7 @@ export class ExcelComponent implements OnInit {
 
 }
 
- console.log(this.usersData3);
+ // console.log(this.usersData3);
 
 
 
@@ -198,7 +198,7 @@ private _filter(name: string): Disease2[] {
     if (this.login.isLoggedIn()){
     this.usersData2['public'] = this.isPublic.value;
     this.usersData2['disease'] = this.myControl.value["id"];
-    this.usersData2['isMapped'] = this.isMapped;
+    // this.usersData2['isMapped'] = this.isMapped;
 
     }
 
@@ -206,8 +206,8 @@ private _filter(name: string): Disease2[] {
     this.usersData2['public'] = true;
     this.usersData2['disease'] = this.myControl.value["id"];
     this.usersData2['email'] = this.analyzeEmail.value;
-    this.usersData2['isMapped'] = this.isMapped;
-    console.log(this.usersData2);
+    // this.usersData2['isMapped'] = this.isMapped;
+    // console.log(this.usersData2);
 
 
     }
@@ -231,8 +231,15 @@ private _filter(name: string): Disease2[] {
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
-        this.notify.info('Analysis Start', 'Analysis in progress');
-        this.router.navigate(['/past-analysis', data['id']]);
+
+          if (data['id'] === 'mapping_error'){
+            this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+          } else {
+            this.notify.info('Analysis Start', 'Analysis in progress');
+            this.router.navigate(['/past-analysis', data['id']]);
+          }
+
       },
         error => {
           this.notify.error('Analysis Fail', error);
@@ -242,8 +249,14 @@ private _filter(name: string): Disease2[] {
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
       data)
       .subscribe((data: any) => {
-        this.notify.info('Analysis Start', 'Results will be sent by email.');
-        this.router.navigate(['/search']);
+          if (data['id'] === 'mapping_error'){
+            this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+          } else {
+            this.notify.info('Analysis Start', 'Analysis in progress');
+            this.notify.info('Analysis Start', 'Results will be sent by email.');
+            this.router.navigate(['/search']);
+          }
       },
         error => {
           this.notify.error('Analysis Fail', error);
@@ -261,9 +274,16 @@ private _filter(name: string): Disease2[] {
       this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-           this.notify.info('Analysis Start', 'Analysis in progress');
-           this.notify.success('Analysis Done', 'Analysis is successfully done');
-           this.router.navigate(['/past-analysis', data['id']]);
+
+             if (data['id'] === 'mapping_error'){
+               this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+             }
+             else {
+               this.notify.info('Analysis Start', 'Analysis in progress');
+               this.notify.success('Analysis Done', 'Analysis is successfully done');
+               this.router.navigate(['/past-analysis', data['id']]);
+             }
          },
          error => {
          this.notify.error('Analysis Fail', error);
@@ -273,16 +293,25 @@ private _filter(name: string): Disease2[] {
 
     } // if
 else{
+
   this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping/public`,
   data, this.login.optionByAuthorization())
   .subscribe((data:any) => {
-    this.notify.info('Analysis Start', 'Analysis in progress');
-    this.notify.success('Analysis Done', 'Analysis Results sent to your email');
-    this.router.navigate(['/search']);
+
+    if (data['id'] === 'mapping_error'){
+      this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+    }
+    else {
+      this.notify.info('Analysis Start', 'Analysis in progress');
+      this.notify.success('Analysis Done', 'Analysis Results sent to your email');
+      this.router.navigate(['/search']);
+    }
   },
   error => {
   this.notify.error('Analysis Fail', error);
 });
+
 localStorage.setItem('search-results', JSON.stringify(data));
 
 
