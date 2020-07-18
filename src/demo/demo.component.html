@@ -49,7 +49,7 @@
           <li> In metabolitesDB we can search for the following from the main page:
 
             <ul>
-            <li>Pathways </li>
+              <li>Pathways </li>
               <li>Metabolites </li>
               <li>Reactions  </li>
             </ul>
@@ -67,23 +67,23 @@
 
         In metabolitesDB we support Searching public studies based on two search criteria:
 
-      <ul>
-        <li>Search studies based on Metabolites
-          <ul>
-            <li>
-              Enter the metabolite name you wish to find studies that include it, then you will be provided with a list of studies that include it.
-            </li>
-          </ul>
-        </li>
+        <ul>
+          <li>Search studies based on Metabolites
+            <ul>
+              <li>
+                Enter the metabolite name you wish to find studies that include it, then you will be provided with a list of studies that include it.
+              </li>
+            </ul>
+          </li>
 
-        <li>Search studies based on Pathways
-          <ul>
-            <li>
-              Enter Pathway name, Change, Diff quantifier, and Diff Amount and then press the Add button and click search to get the results, you may choose multiple pathways to search at once.
-            </li>
-          </ul>
-        </li>
-      </ul>
+          <li>Search studies based on Pathways
+            <ul>
+              <li>
+                Enter Pathway name, Change, Diff quantifier, and Diff Amount and then press the Add button and click search to get the results, you may choose multiple pathways to search at once.
+              </li>
+            </ul>
+          </li>
+        </ul>
         <br><br>
         <img class="img-responsive img-center" src="assets/demo/search2.png">
         <br><br>
@@ -103,13 +103,13 @@
         You can access them from the Top menu Browse Section.
         <br>
         <h4> Pathway Browse Page </h4>
-        Here we provide visualization and reaction information about.
+        Here we provide visualization and reaction information for each pathway, choose a pathway and its details along with a plot will be shown.
         <br><br>
         <img class="img-responsive img-center" src="assets/demo/browse1.png">
         <br><br>
-       <h4>
-       Analysis Browse Page
-       </h4>
+        <h4>
+          Analysis Browse Page
+        </h4>
         on this page, you can check the analyzed studies and also we provide the option to compare them by choosing a number of studies and press the compare button.
         <br><br>
         <img class="img-responsive img-center" src="assets/demo/browse2.png">
@@ -125,14 +125,14 @@
       <div class="panel-body">
         <!--<h3>Quick Notes: </h3>-->
 
-          in metabliticsdb we provided Sample files for each format we support, they are provided in the documentation section.
-          Metabolites Names should be from one of our supported Datasets:
-            <ul>
-              <li>CheBI</li>
-              <li>Hmdb</li>
-              <li>Kegg</li>
-              <li>PubChem</li>
-            </ul>
+        in metabliticsdb we provided Sample files for each format we support, they are provided in the documentation section.
+        Metabolites Names should be from one of our supported Datasets:
+        <ul>
+          <li>CheBI</li>
+          <li>Hmdb</li>
+          <li>Kegg</li>
+          <li>PubChem</li>
+        </ul>
 
 
         <h4>
@@ -218,10 +218,11 @@
 
         <h4> Upload File </h4>
         when choosing this option you will be directed to the following page with various file formats that MetaboliticsDB support, for detailed information about the formats refer to Supported data formats section.
+        <br>
         <img class="img-responsive img-center" src="assets/demo/analyze2.png">
         <br>
         Choose your preferred format and upload your study file, and you will be redirected to the following page:
-        <br>
+        <br><br>
         <img class="img-responsive img-center" src="assets/demo/analyze3.png">
         <br>
 
@@ -244,16 +245,18 @@
 
 
         </ul>
-        <img class="img-responsive img-center" src="assets/demo/analyze4.png">
-        <br><br>
+
       </div>
     </div>
+
+
 
     <div class="panel panel-success" id="Link6">
       <div class="panel-heading">Accessing Analysis Results</div>
       <div class="panel-body">
         <h4> Registered Users  </h4>
         Registered Users will be able to send their data to be analyzed and Control whether the analysis results will be publicly available or kept private and only shown for the user.
+        <br><br>
         <img class="img-responsive img-center" src="assets/demo/results1.png">
         To access analysis results for registered users, Head to top menu to Account section and choose Past Analysis subsection and you will be redirected to your Private studies results list, then you check the results or compare between them, you can check public studies results from the same page if you choose to by clicking ‘Public’ button.
 
@@ -261,7 +264,37 @@
 
         Unregistered users are able to send their data to be analyzed but they will need to provide us with their Email, once the analysis results are ready they will be notified by email with the link to access it, an important notice is that those studies done by unregistered users will be publicly available.
         To access publicly available analysis results, head to the top menu and select the ‘Browse’ section and click ‘Browse Analysis’ and you will be redirected to analysis results page.
+        <br><br>
         <img class="img-responsive img-center" src="assets/demo/results2.png">
+
+
+        <h4> Analysis results page</h4>
+        when we access an analysis result page,
+        The  analysis  results  arepresented in multiple levels of details in both visual and tabular forms
+
+        a bar plot for the top 20 pathways with the highest absolute diff values will is provided.
+        <img class="img-responsive img-center" src="assets/demo/disease1.png">
+
+        <br><br>
+        Below the bar plot, in a tabular form, all the pathways are listed with their computed diff
+        values.Next to each pathway, two buttons are placed. The left button visualizes the corresponding
+        pathway where each node represents a metabolite, and each edge represents a reaction. Edges are colored
+        and thickened according tothe corresponding reactions’ diff value.
+        This form of visualization allows the user to quickly inspect what parts of thepathway experience the most
+        change.
+        <br><br>
+        <img class="img-responsive img-center" src="assets/demo/results-pathways.png">
+
+        <br>
+
+        The right button, on the other hand,lists all the pathway reactions and their diff values in
+        tabular form.
+        <br><br>
+
+        <img class="img-responsive img-center" src="assets/demo/results-reaction.png">
+
+        <br><br>
+
 
 
       </div>
@@ -270,24 +303,35 @@
 
 
 
-  <div class="panel panel-success" id="Link7">
-    <div class="panel-heading">Comparison of different analysis results for different datasets</div>
-    <div class="panel-body">
-      MetabolitesDB enables users to compare between the analysis results for different datasets, to achieve that you have to access the browse analysis subsection from the Browse section in the top menu.
-      <br><br>
-      <img class="img-responsive img-center" src="assets/demo/compare1.png">
-      Next the user will have to choose a study and press it, it will expand and show the subjects inside that study, in each subject tab there is a checkbutton, in order to compare between two subjects the user will have to click the check buttons for all the subjects he wishes to compare.
-      <br><br>
-      <img class="img-responsive img-center" src="assets/demo/compare2.png">
-      <br>
-      Next the user will go up to the top menu and click the button ‘Compare ’, in our case we choose two subjects from the same study, Next we will be redirected to the comparison page.
-      We will see a visualization of pathways concentration for each subject, and in the lower part we will see each subjects pathways values.
-      <br><br>
-      <img class="img-responsive img-center" src="assets/demo/compare3.png">
-      <br><br>
+    <div class="panel panel-success" id="Link7">
+      <div class="panel-heading">Comparison of different analysis results for different datasets</div>
+      <div class="panel-body">
+        MetaboliticsDB allows users to compare and contrast their metabolomics data analysis results to
+        their previous analysis results,
+         other users’publicly available analysis results,
+         and diseases and physiologicalconditions stored in the database.
+        to achieve that you have to access the browse analysis subsection from the Browse section in the top menu.
+        <br><br>
+        <img class="img-responsive img-center" src="assets/demo/compare1.png">
+        Next the user will have to choose a study and press it, it will expand and show the subjects inside that study, in each subject tab there is a checkbutton, in order to compare between two subjects the user will have to click the check buttons for all the subjects he wishes to compare.
+        <br><br>
+        <img class="img-responsive img-center" src="assets/demo/compare2.png">
+        <br>
+        Next the user will go up to the top menu and click the button ‘Compare ’, in our case we choose two subjects from the same study, Next we will be redirected to the comparison page.
 
+        The comparison page features a heatmap at the top
+        where the rows represent pathways with the highest variance in terms of their diff values among the compared analysis
+        results, and the columns represent the compared analysis results.Each cell in the heatmap is colored according to the corresponding pathway diff values.
+
+        in the lower part of the page we will find each subjects pathways values.
+
+
+        <br><br>
+        <img class="img-responsive img-center" src="assets/demo/compare3.png">
+        <br><br>
+
+      </div>
     </div>
-  </div>
 
 
 
@@ -300,23 +344,24 @@
       <div class="panel-heading">Disease Association</div>
       <div class="panel-body">
         Disease association
-<ul>
-  <li>Another novel feature of the MetaboliticsDB is that for each metabolomics
-    analysis result, the closest set of diseases and physiological conditions are
-    computed based on the similarity of the pathway-level metabolic behavior.</li>
-  <li>   MetaboliticsDB stores metabolomics analysis results
-    of a number of diseases (pre-computed and recorded in its database).
-    Then, for each user submitted analysis run, the user is presented the
-    top 5 diseases (e.g., diabetes) that have most similarity to the currently
-    analyzed metabolomics data in terms of the activity level distribution over
-    the metabolic pathways.</li>
-  <li>In order to quantify the similarity,MetaboliticsDB turns both the current analysis results and disease analysis results stored in the database into vectors of numbers where each number represents the diff value for a particular pathway. Then, Pearson correlation is computed between each disease vector and the current analysis result vector. Finally, the diseases in the database are sorted according to their correlation values, and top 5 of them are presented to the user.</li>
+        <ul>
+          <li>Another novel feature of the MetaboliticsDB is that for each metabolomics
+            analysis result, the closest set of diseases and physiological conditions are
+            computed based on the similarity of the pathway-level metabolic behavior.</li>
+          <li>   MetaboliticsDB stores metabolomics analysis results
+            of a number of diseases (pre-computed and recorded in its database).
+            Then, for each user submitted analysis run, the user is presented the
+            top 5 diseases (e.g., diabetes) that have most similarity to the currently
+            analyzed metabolomics data in terms of the activity level distribution over
+            the metabolic pathways.</li>
 
-</ul>
+        </ul>
 
 
-        To check disease association, we access our analysis results page (refer to Accessing Analysis Section in the Tutorial), then we will notice under the analysis visualization  there is a Disease Section, in it we will provide the top 5 similar cases and their similarity value to the analysis.
-<br><br>
+        To check disease association, we access our analysis results page (refer to Accessing Analysis Section in the Tutorial),
+        then we will notice under the pathways bar plot there is a Disease Section, in it we will provide the top 5 similar
+        cases and their similarity value to the analysis.
+        <br><br>
         <img class="img-responsive img-center" src="assets/demo/disease1.png">
         <br><br><br>
       </div>
