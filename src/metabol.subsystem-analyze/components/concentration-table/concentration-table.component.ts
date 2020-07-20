@@ -206,10 +206,11 @@ export class ConcentrationTableComponent implements OnInit {
 
     }  // else
 
-    // console.log(data);
 
 
     if (selectedMethod === this.methods.Metabolitics) {
+      console.log(data);
+
       this.metabolitics(data);
     }
     else if(selectedMethod === this.methods.DirectPathwayMapping) {
@@ -256,9 +257,15 @@ export class ConcentrationTableComponent implements OnInit {
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva`,
       data, this.login.optionByAuthorization())
       .subscribe((data: any) => {
-        this.notify.info('Analysis Start', 'Analysis in progress');
-        this.router.navigate(['/past-analysis', data['id']]);
-      },
+
+          if (data['id'] === 'mapping_error') {
+            this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+          } else {
+            this.notify.info('Analysis Start', 'Analysis in progress');
+            this.router.navigate(['/past-analysis', data['id']]);
+          }
+        },
         error => {
           this.notify.error('Analysis Fail', error);
         });
@@ -267,9 +274,18 @@ export class ConcentrationTableComponent implements OnInit {
     this.http.post(`${AppSettings.API_ENDPOINT}/analysis/fva/public`,
       data)
       .subscribe((data: any) => {
-        this.notify.info('Analysis Start', 'Results will be sent by email.');
-        this.router.navigate(['/search']);
-      },
+
+          if (data['id'] === 'mapping_error'){
+            this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+          } else {
+            this.notify.info('Analysis Start', 'Analysis in progress');
+            this.notify.info('Analysis Start', 'Results will be sent by email.');
+            this.router.navigate(['/search']);
+          }
+
+
+        },
         error => {
           this.notify.error('Analysis Fail', error);
         });
@@ -289,9 +305,16 @@ export class ConcentrationTableComponent implements OnInit {
       this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping`,
          data, this.login.optionByAuthorization())
          .subscribe((data:any) => {
-           this.notify.info('Analysis Start', 'Analysis in progress');
-           this.notify.success('Analysis Done', 'Analysis is successfully done');
-           this.router.navigate(['/past-analysis', data['id']]);
+
+
+             if (data['id'] === 'mapping_error'){
+               this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+             } else {
+               this.notify.info('Analysis Start', 'Analysis in progress');
+               this.notify.success('Analysis Done', 'Analysis is successfully done');
+               this.router.navigate(['/past-analysis', data['id']]);
+             }
          },
          error => {
          this.notify.error('Analysis Fail', error);
@@ -303,9 +326,17 @@ else{
   this.http.post(`${AppSettings.API_ENDPOINT}/analysis/direct-pathway-mapping/public`,
   data, this.login.optionByAuthorization())
   .subscribe((data:any) => {
-    this.notify.info('Analysis Start', 'Analysis in progress');
-    this.notify.success('Analysis Done', 'Analysis Results sent to your email');
-    this.router.navigate(['/search']);
+
+      if (data['id'] === 'mapping_error'){
+        this.notify.error('Mapping Error', 'please check your study inputs or refer to our sample files');
+
+      } else {
+        this.notify.info('Analysis Start', 'Analysis in progress');
+        this.notify.info('Analysis Start', 'Results will be sent by email.');
+        this.router.navigate(['/search']);
+      }
+
+
       },
   error => {
   this.notify.error('Analysis Fail', error);
