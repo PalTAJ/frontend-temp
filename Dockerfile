@@ -9,7 +9,7 @@ WORKDIR /app
 
 RUN npm install
 
-RUN npm run build -- --prod --output-path=./dist
+RUN npm run build --prod --output-path=./dist
 
 #RUN ng build --prod --output-path=./dist
 
