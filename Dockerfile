@@ -1,4 +1,7 @@
-FROM node:10.5 as build-stage
+#FROM node:10.5 as build-stage
+
+
+FROM node:9.5.0-alpine as build-stage
 
 COPY . /app
 
