@@ -1,6 +1,6 @@
 #FROM node:10.5 as build-stage
 
-FROM node:11.6.0-alpine AS builder
+FROM node:11.6.0-alpine AS build-stage
 
 COPY . /app
 
@@ -8,9 +8,8 @@ WORKDIR /app
 
 RUN npm install
 
-#RUN npm run build --prod --output-path=./dist
+RUN npm run build --prod --output-path=./dist
 
-RUN $(npm bin)/ng build --prod
 
 #RUN ng build --prod --output-path=./dist
 
